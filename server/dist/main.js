@@ -10,6 +10,8 @@ const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const vendor_1 = require("./vendor");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const utils_permission_1 = require("./utils/permission/utils.permission");
+const routes_private_route_1 = require("./routes/private/routes.private.route");
 class Main extends vendor_1.ExpressConfig {
     constructor(useCluster = false) {
         super(useCluster);
@@ -27,6 +29,7 @@ class Main extends vendor_1.ExpressConfig {
         this.app.use((0, morgan_1.default)("dev"));
         this.app.use(express_1.default.json());
         this.app.use(express_1.default.urlencoded({ extended: true }));
+        this.app.use("/resources", [utils_permission_1.UtilsPermission, routes_private_route_1.RoutesPrivateRoute.Index]);
     }
 }
 const server = new Main(false);
