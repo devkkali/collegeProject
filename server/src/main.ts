@@ -5,8 +5,8 @@ import morgan from "morgan";
 import cors from "cors";
 import { ExpressConfig } from "./vendor";
 import cookieParser from "cookie-parser";
-import { UtilsPermission } from "./utils/permission/utils.permission";
 import { RoutesPrivateRoute } from "./routes/private/routes.private.route";
+import { UtilsError, UtilsPermission } from "./utils";
 
 
 class Main extends ExpressConfig {
@@ -31,6 +31,7 @@ class Main extends ExpressConfig {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use("/resources",[UtilsPermission, RoutesPrivateRoute.Index])
+    this.app.use(UtilsError);
   
   }
 }

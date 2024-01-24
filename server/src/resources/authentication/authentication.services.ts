@@ -21,11 +21,18 @@ export namespace AuthenticationServices {
         });
       }
       if (check_email) {
-
-        console.log('errorrrr')
+        return Promise.reject({
+          code: 400,
+          http_status_code: 409,
+          error: "User Email already exist",
+        });
       }
       if (check_username) {
-
+        return Promise.reject({
+          code: 400,
+          http_status_code: 409,
+          error: "Username already exist",
+        });
       }
     } catch (e) {
       return Promise.reject(e);
