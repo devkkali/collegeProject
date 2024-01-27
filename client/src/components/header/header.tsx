@@ -3,8 +3,8 @@ import { ArrowRight2, User } from "iconsax-react";
 
 export const Header = () => {
   const Logo = () => (
-    <Link className={"text-[26px] font-bold text-white "} href={"/"}>
-      FLeague
+    <Link className={"text-[2px] font-bold text-white "} href={"/"}>
+      <img className="h-10 w-10" src="/logo-bg.png"/>
     </Link>
   );
   const Account = () => (
