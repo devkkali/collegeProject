@@ -29,7 +29,7 @@ export class ExpressConfig extends MongooseConfig {
         console.log(`Worker ${worker.process.pid} died`);
       });
     } else {
-      const port = process.env.PORT || 9000;
+      const port = process.env.PORT || 4000;
       // Health check endpoint
       this.app.get('/heartcheck', (req, res) => {
         res.status(200).json({ status: 'OK', message: 'Heartcheck passed' });

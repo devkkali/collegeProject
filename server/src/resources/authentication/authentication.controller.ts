@@ -14,4 +14,19 @@ export namespace AuthenticationController {
     }
   };
 
+
+
+
+  export const SignIn = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.SignIn(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
 }

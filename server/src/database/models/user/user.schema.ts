@@ -51,24 +51,4 @@ export namespace UserSchema {
     this.password = await bcrypt.hash(String(this.password), 8);
     next();
   });
-
-
-  
-  export const UserType = new mongoose.Schema<Type.UserType>(
-    {
-      uid: {
-        type: String,
-        default: null,
-      },
-      role: {
-        type: String,
-        enum: ["admin", "user"],
-        default: "user",
-      },
-    },
-    {
-      timestamps: true,
-      versionKey: false,
-    }
-  );
 }

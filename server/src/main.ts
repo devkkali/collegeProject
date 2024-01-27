@@ -38,3 +38,8 @@ class Main extends ExpressConfig {
 
 const server = new Main(false);
 server.start();
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  // Handle the error or exit the process as needed
+  process.exit(1);
+});

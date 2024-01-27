@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthenticationController, AuthenticationValidation } from "./index.js";
+import { AuthenticationController, AuthenticationServices, AuthenticationValidation } from "./index.js";
 import { validateRequest } from "zod-express-middleware";
 
 export namespace AuthenticationRoute {
@@ -114,4 +114,8 @@ export namespace AuthenticationRoute {
  *       500:
  *         description: Server Error
  */
+  Index.post("/authentication/signin", [
+    validateRequest(AuthenticationValidation.SignIn),
+    AuthenticationController.SignIn
+  ]);
 }

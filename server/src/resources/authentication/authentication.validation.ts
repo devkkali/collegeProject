@@ -20,4 +20,13 @@ export namespace AuthenticationValidation {
         path: ["cnf_password"],
       }),
   };
+
+  export const SignIn = {
+    body: z
+      .object({
+        uid: z.string(),
+        password: z.string(),
+      })
+      .strict(),
+  };
 }

@@ -11,8 +11,4 @@ export namespace Type {
     password: CommonType.TString;
     role: CommonType.TRole;
   }
-  interface UserType {
-    uid: CommonType.TString; // Adjust this based on your user ID type
-    role: CommonType.TRole;
-  }
 }
