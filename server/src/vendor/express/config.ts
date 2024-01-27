@@ -30,9 +30,12 @@ export class ExpressConfig extends MongooseConfig {
       });
     } else {
       const port = process.env.PORT || 9000;
-
+      // Health check endpoint
+      this.app.get('/heartcheck', (req, res) => {
+        res.status(200).json({ status: 'OK', message: 'Heartcheck passed' });
+      });
       this.app.listen(port, () => {
-        swaggerDocs(this.app,Number(port))
+        swaggerDocs(this.app, Number(port))
         console.log(`Server is running on port ${port}`);
       });
     }

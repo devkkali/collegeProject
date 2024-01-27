@@ -16,22 +16,40 @@ export namespace AuthenticationServices {
         delete user_details?.cnf_password;
         const new_user = new userModel.User(user_details);
         const save_user = await new_user.save();
-        return Promise.resolve({
-          data: save_user,
+
+
+        // Create user_type entry with uid and role
+        console.log(save_user._id)
+        const user_type_entry = new userModel.UserType({
+          uid: save_user._id, // assuming _id is the user ID
+          role: req.body.role, // replace with the actual role
         });
+        await user_type_entry.save();
+
+        return Promise.resolve({
+          "message": "signup successful",
+          "url": "/auth/sign-in"
+        });
+
       }
       if (check_email) {
         return Promise.reject({
           code: 400,
           http_status_code: 409,
-          error: "User Email already exist",
+          error: {
+            message: "User Email already exist",
+            path: "email",
+          }
         });
       }
       if (check_username) {
         return Promise.reject({
           code: 400,
           http_status_code: 409,
-          error: "Username already exist",
+          error: {
+            message: "Username already exist",
+            path: "username"
+          },
         });
       }
     } catch (e) {

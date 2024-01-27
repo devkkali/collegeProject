@@ -4,12 +4,25 @@ import { validateRequest } from "zod-express-middleware";
 
 export namespace AuthenticationRoute {
   export const Index = Router();
+
+  /**
+ * @openapi
+ * '/heartcheck':
+ *   get:
+ *     tags:
+ *       - Heart Check
+ *     summary: Check if server is running
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+
   /**
    * @openapi
    * '/resources/authentication/signup':
    *  post:
    *     tags:
-   *     - User Controller
+   *     - Auth Controller
    *     summary: Create a user
    *     requestBody:
    *      required: true
@@ -65,4 +78,40 @@ export namespace AuthenticationRoute {
     validateRequest(AuthenticationValidation.SignUp),
     AuthenticationController.SignUp,
   ]);
+
+
+
+  /**
+ * @openapi
+ * '/resources/authentication/signin':
+ *   post:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Sign in a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - uid
+ *               - password
+ *             properties:
+ *               uid:
+ *                 type: string
+ *                 default: johndoe
+ *               password:
+ *                 type: string
+ *                 default: johnDoe20!@
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
 }

@@ -12,6 +12,7 @@ export namespace AuthenticationValidation {
         email: z.string().email(),
         password: z.string(),
         cnf_password: z.string(),
+        role: z.enum(["admin", "user"]).optional(),
       })
       .strict()
       .refine((data) => data.password === data.cnf_password, {
@@ -19,5 +20,4 @@ export namespace AuthenticationValidation {
         path: ["cnf_password"],
       }),
   };
-
 }
