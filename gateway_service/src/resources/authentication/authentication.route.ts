@@ -118,4 +118,27 @@ export namespace AuthenticationRoute {
     validateRequest(AuthenticationValidation.SignIn),
     AuthenticationController.SignIn
   ]);
+
+
+
+  /**
+ * @openapi
+ * '/resources/authentication/users':
+ *   get:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Sign in a user
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+  Index.get("/authentication/users", [
+    AuthenticationController.Users
+  ]);
 }
