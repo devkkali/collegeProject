@@ -66,6 +66,7 @@ export namespace AuthenticationServices {
   export const SignIn = async (req: Request) => {
     try {
 
+      console.log('headers', req.headers)
 
       const authResponse = await axios.post('http://localhost:4000/resources/authentication/signin', req.body);
 
