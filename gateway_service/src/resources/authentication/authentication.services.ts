@@ -3,6 +3,9 @@ import { userModel } from "../../database/models/user/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { userTypeModel } from "../../database/models/userType/userType.model";
+import axios from "axios";
+import { AxiosError } from "axios";
+import { error } from "console";
 
 export namespace AuthenticationServices {
   export const SignUp = async (req: Request) => {
@@ -62,60 +65,31 @@ export namespace AuthenticationServices {
 
   export const SignIn = async (req: Request) => {
     try {
-      const check_user = await userModel.User.findOne({
-        $or: [{ email: req.body?.uid }, { username: req.body?.uid }],
+
+      console.log('headers', req.headers)
+
+      const authResponse = await axios.post('http://localhost:4000/resources/authentication/signin', req.body);
+
+      return Promise.resolve({
+        message: "Sign in successful ",
+        token: authResponse.data.token,
+        url: authResponse.data.url,
       });
-      if (check_user) {
-        const match = await bcrypt.compare(
-          req.body.password,
-          check_user.password as string
-        );
-        if (!match) {
+
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+        const axiosError = e as AxiosError;
+
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
           return Promise.reject({
             code: 400,
-            http_status_code: 401,
-            error: {
-              message: "Password not match ",
-              path: "password",
-            },
-          });
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
         }
-
-        const role = await userTypeModel.UserType.findOne({uid:check_user._id})
-        console.log(role?.role)
-
-        const accessToken = jwt.sign(
-          {
-            id: check_user._id,
-            role: role?.role,
-          },
-          process.env.JWT as string,
-          {
-            algorithm: "HS256",
-            expiresIn: "1d",
-          }
-        );
-
-        return Promise.resolve({
-          message: "Sign in successful ",
-          token: accessToken,
-          url: role?.role === "user" ? "/dashboard" : "/system/dashboard",
-        });
       }
-      if (!check_user) {
-        return Promise.reject({
-          code: 400,
-          http_status_code: 404,
-          error: {
-            message: "User does not exist",
-            path: "uid",
-          },
-        });
-      }
-    } catch (e) {
       return Promise.reject(e);
     }
   };
-
-
 }
