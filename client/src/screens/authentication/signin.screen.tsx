@@ -6,11 +6,7 @@ import Link from "next/link";
 export const SignInScreen: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-screen">
-      <div
-        className={
-          "flex flex-col items-center justify-start w-[400px] h-[580px] bg-white p-4 border rounded-md shadow-md"
-        }
-      >
+      <div className= "flex flex-col items-center justify-start w-[400px] h-[580px] bg-white p-4 border rounded-md shadow-md">
         <div className="flex flex-col justify-between items-start p-1.5 w-full h-full">
           <div className={"w-full"}>
             <h2 className={"text-[24px] font-bold text-slate-900"}>

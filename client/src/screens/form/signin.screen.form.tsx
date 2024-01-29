@@ -6,9 +6,7 @@ import { TextBox } from "@/components/textbox";
 export const SignInScreenForm = () => {
 
   return (
-    <form
-      className="mt-6 flex flex-col gap-10 w-full"
-    >
+    <form className={"mt-6 flex flex-col gap-10 w-full"}>
       <div className={"w-full h-[50px]"}>
         <TextBox
           id="email"
@@ -19,7 +17,7 @@ export const SignInScreenForm = () => {
       </div>
       <div className={"w-full h-[50px]"}>
         <TextBox
-          link={{
+          link= {{
             name: "Forgot Password?",
             path: "#",
           }}
@@ -29,7 +27,6 @@ export const SignInScreenForm = () => {
           label="Password"
         />
       </div>
-
       <div className={"w-full h-[50px]"}>
         <Button
           type="submit"

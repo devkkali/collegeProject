@@ -1,4 +1,7 @@
 "use client";
+
+import { SignUpScreen } from "@/screens/authentication/signup.screen";
+
 export default function Page() {
-  return <div>login</div>;
+  return <div><SignUpScreen/></div>;
 }
