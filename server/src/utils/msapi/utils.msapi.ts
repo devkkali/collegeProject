@@ -6,7 +6,7 @@ export const UtilsMSApi = async (
   next: NextFunction
 ) => {
   try {
-    console.log("process.env.MSTYPE",process.env.MSTYPE)
+    console.log('header in ms:',req.headers)
     if (process.env.MSTYPE === "gateway") {
       const details = await PermissionModel.Permission.findOne({
         permission_path: req.path,
@@ -19,8 +19,8 @@ export const UtilsMSApi = async (
         req.headers['API_KEY'] = process.env.API_MATCH
       }
     } else {
-      if (process.env.APIKEY !== req.headers['API_KEY']) {
-        res.status(400).send("Not allowed");
+      if (process.env.APIKEY !== req.headers['api_key']) {
+        res.status(401).send({message:"Not allowed"});
       }
     }
 

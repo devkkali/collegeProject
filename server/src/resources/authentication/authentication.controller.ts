@@ -29,4 +29,20 @@ export namespace AuthenticationController {
     }
   };
 
+
+
+
+
+  export const Users = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.Users(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
 }

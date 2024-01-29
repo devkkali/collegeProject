@@ -98,6 +98,44 @@ export namespace AuthenticationServices {
   export const Users = async (req: Request) => {
     console.log('headers', req.headers)
     try {
+
+      const authResponse = await axios.get('http://localhost:4000/resources/authentication/users', { headers : req.headers } );
+
+      return Promise.resolve({
+        message: "data extracted",
+        data:authResponse.data.data
+        // url: authResponse.data.url,
+      });
+
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+        const axiosError = e as AxiosError;
+
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
+        }
+      }
+      return Promise.reject(e);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    try {
       const check_user = await userModel.User.find()
       if (check_user)
         return Promise.resolve({

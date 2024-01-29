@@ -118,4 +118,35 @@ export namespace AuthenticationServices {
   };
 
 
+
+
+
+
+  export const Users = async (req: Request) => {
+    console.log('head', req.headers)
+    try {
+      const check_user = await userModel.User.find()
+      console.log("users",check_user)
+      if (check_user)
+        return Promise.resolve({
+          message: 'success',
+          data:check_user
+        });
+
+
+      if (!check_user) {
+        return Promise.reject({
+          code: 400,
+          http_status_code: 404,
+          error: {
+            message: "User does not exist",
+            path: "uid",
+          },
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
 }

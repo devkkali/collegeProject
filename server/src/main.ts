@@ -6,7 +6,7 @@ import cors from "cors";
 import { ExpressConfig } from "./vendor";
 import cookieParser from "cookie-parser";
 import { RoutesPrivateRoute } from "./routes/private/routes.private.route";
-import { UtilsError, UtilsPermission } from "./utils";
+import { UtilsError, UtilsMSApi, UtilsPermission } from "./utils";
 
 
 class Main extends ExpressConfig {
@@ -30,9 +30,9 @@ class Main extends ExpressConfig {
     this.app.use(morgan("dev"));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use("/resources",[RoutesPrivateRoute.Index])
+    this.app.use("/resources", [UtilsMSApi, RoutesPrivateRoute.Index])
     this.app.use(UtilsError);
-  
+
   }
 }
 
