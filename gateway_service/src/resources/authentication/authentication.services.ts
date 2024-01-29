@@ -65,11 +65,16 @@ export namespace AuthenticationServices {
 
   export const SignIn = async (req: Request) => {
     try {
-
-      console.log('headers', req.headers)
-
-      const authResponse = await axios.post('http://localhost:4000/resources/authentication/signin', req.body);
-
+      const headers = {
+        'api_key': req.headers['api_key'],
+        'Content-Type': 'application/json',
+        'Authorization': 'a'
+      }
+      console.log('RRRRRRRRRRRRRRRRR', headers)
+      // let headers = req.headers
+      // const authResponse = await axios.post('http://localhost:4000/resources/authentication/signin', req.body, { headers: req.headers });
+      const authResponse = await axios.post('http://localhost:4000/resources/authentication/signin', req.body, { headers: req.headers });
+      console.log('OOOOOOOOOOOOOOOOOOOOOOOOOO', authResponse)
       return Promise.resolve({
         message: "Sign in successful ",
         token: authResponse.data.token,
@@ -77,10 +82,9 @@ export namespace AuthenticationServices {
       });
 
     } catch (e) {
+      // console.log('roshanError', e)
       if (axios.isAxiosError(e)) {
-        console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
         const axiosError = e as AxiosError;
-
         if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
           return Promise.reject({
             code: 400,
@@ -99,11 +103,11 @@ export namespace AuthenticationServices {
     console.log('headers', req.headers)
     try {
 
-      const authResponse = await axios.get('http://localhost:4000/resources/authentication/users', { headers : req.headers } );
+      const authResponse = await axios.get('http://localhost:4000/resources/authentication/users', { headers: req.headers });
 
       return Promise.resolve({
         message: "data extracted",
-        data:authResponse.data.data
+        data: authResponse.data.data
         // url: authResponse.data.url,
       });
 

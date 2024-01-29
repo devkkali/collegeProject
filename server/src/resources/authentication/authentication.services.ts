@@ -61,6 +61,7 @@ export namespace AuthenticationServices {
 
 
   export const SignIn = async (req: Request) => {
+    console.log('user ms sign in',req)
     try {
       const check_user = await userModel.User.findOne({
         $or: [{ email: req.body?.uid }, { username: req.body?.uid }],

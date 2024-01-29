@@ -22,6 +22,7 @@ export namespace AuthenticationController {
     res: Response,
     next: NextFunction
   ) => {
+    console.log('sign in from controller')
     try {
       res.status(200).json(await AuthenticationServices.SignIn(req));
     } catch (e) {

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { request } from "express";
 import "dotenv/config";
 import morgan from "morgan";
 // import { ErrorMiddleware } from "./core/middlewares/error/error.middleware.js"; // import statusMonitor from 'express-status-monitor';

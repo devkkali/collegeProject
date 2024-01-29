@@ -13,13 +13,18 @@ export const UtilsMSApi = async (
       });
 
       if (details && details.ms === "user") {
-        req.headers['API_KEY'] = process.env.API_USER
+        req.headers = {
+          'api_key': process.env.API_USER,
+          'Content-Type': 'application/json',
+          'Authorization': req.headers.authorization
+        }
+        // req.headers['api_key'] = process.env.API_USER
       }
       else if (details && details.ms === "match") {
-        req.headers['API_KEY'] = process.env.API_MATCH
+        req.headers['api_key'] = process.env.API_MATCH
       }
     } else {
-      if (process.env.APIKEY !== req.headers['API_KEY']) {
+      if (process.env.APIKEY !== req.headers['api_key']) {
         res.status(400).send("Not allowed");
       }
     }
