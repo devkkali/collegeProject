@@ -30,25 +30,49 @@ export namespace ClubServices {
         }
     };
     export const GetClub = async (req: Request) => {
-        // if(req.query.id){
-        //     console.log(req.query.id)
-        // }
-        if(req.params.id){
-            var id= req.params.id
+        if (Object.keys(req.query).length > 0) {
+            console.log('i am from query', req.query)
+            const filter = { ...req.query }
             try {
-                console.log(id)
-                const check_club = await clubModel.Club.findById(id);
-                if(!check_club){
+                for (const key in filter) {
+                    filter[key] = { $regex: filter[key], $options: 'i' }
+                }
+
+                const check_club = await clubModel.Club.find(filter).limit(5);
+
+
+
+                if (!check_club) {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
                         error: "Club does not exist",
-                    }); 
+                    });
                 }
                 return Promise.resolve({
                     data: check_club,
                 });
-    
+
+            } catch (e) {
+                return Promise.reject(e);
+            }
+        }
+        if (req.params.id) {
+            var id = req.params.id
+            try {
+                console.log(id)
+                const check_club = await clubModel.Club.findById(id);
+                if (!check_club) {
+                    return Promise.reject({
+                        code: 400,
+                        http_status_code: 404,
+                        error: "Club does not exist",
+                    });
+                }
+                return Promise.resolve({
+                    data: check_club,
+                });
+
             } catch (e) {
                 return Promise.reject(e);
             }
@@ -56,25 +80,70 @@ export namespace ClubServices {
 
         try {
             const check_club = await clubModel.Club.find();
-            return Promise.resolve({
-                data: check_club,
-            });
+            return Promise.resolve(
+                check_club,
+            );
 
         } catch (e) {
             return Promise.reject(e);
         }
     };
     export const DeleteClub = async (req: Request) => {
-        if(req.params.id){
-            var id= req.params.id
-            try {
-                const check_club = await clubModel.Club.findByIdAndDelete(id);
-    
-            } catch (e) {
-                return Promise.reject(e);
+
+        try {
+            let id = req.params.id
+            const check_club = await clubModel.Club.deleteOne({ _id: id });
+
+            if (check_club.deletedCount === 0) {
+                return Promise.reject({
+                    code: 400,
+                    http_status_code: 404,
+                    error: "Club does not exist",
+                });
             }
+
+            return Promise.resolve({
+                data: 'Item deleted',
+            });
+        } catch (e) {
+            return Promise.reject(e);
         }
 
     };
 
+    export const UpdateClub = async (req: Request) => {
+        try {
+            const check_club = await clubModel.Club.findOne({
+                _id: req.params?.id,
+            });
+
+            if (check_club) {
+                const club_details = req.body;
+
+                console.log(club_details)
+
+                // const new_club = new clubModel.Club(club_details);
+                // const save_club = await new_club.save();
+
+
+                const result = await clubModel.Club.updateOne({ _id: req.params.id }, { $set: req.body })
+                console.log(result)
+                const returnClub = await clubModel.Club.findById(req.params.id);
+
+
+                return Promise.resolve({
+                    data: returnClub,
+                });
+            }
+            if (!check_club) {
+                return Promise.reject({
+                    code: 400,
+                    http_status_code: 404,
+                    error: "Club does not exist",
+                });
+            }
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    };
 }
