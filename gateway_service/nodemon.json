@@ -1,0 +1,7 @@
+{
+  "watch": ["src"],
+  "ext": ".ts,.mjs,.js,.json,.graphql",
+  "ignore": [],
+  "exec": "tsc && node --env-file=.env.development dist/src/main.js",
+  "legacyWatch": true
+}
