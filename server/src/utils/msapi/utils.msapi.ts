@@ -24,7 +24,6 @@ export const UtilsMSApi = async (
     } else {
       console.log('api_key',req.headers)
 
-
       console.log('environment api_key',process.env.APIKEY)
       if (req.headers['api_key'] !== process.env.APIKEY) {
         console.log('api validation failed ', req.body)

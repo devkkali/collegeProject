@@ -29,4 +29,13 @@ export namespace AuthenticationValidation {
       })
       .strict(),
   };
+
+
+  export const ForgotPassword = {
+    body: z
+      .object({
+        email: z.string().email(),
+      })
+      .strict(),
+  };
 }

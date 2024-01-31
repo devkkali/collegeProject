@@ -33,9 +33,9 @@ const options: swaggerJsdoc.Options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 
-function swaggerDocs(app: Express, port: number) {
+export function swaggerDocs(app: Express, port: number) {
   // Swagger page
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec,{customSiteTitle:"User MS"}));
 
   // Docs in JSON format
   app.get("/docs.json", (req: Request, res: Response) => {

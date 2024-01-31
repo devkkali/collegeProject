@@ -42,13 +42,13 @@ export namespace AuthenticationRoute {
    *            properties:
    *              username:
    *                type: string
-   *                default: johndoe 
+   *                default: jordan 
    *              first_name:
    *                type: string
-   *                default: John
+   *                default: Jordan
    *              last_name:
    *                type: string
-   *                default: Doe
+   *                default: Dsouza
    *              dob:
    *                type: string
    *                default: '22/01/2024'
@@ -57,13 +57,13 @@ export namespace AuthenticationRoute {
    *                default: 'male'
    *              email:
    *                type: string
-   *                default: johndoe@mail.com
+   *                default: jordandsouza1999@gmail.com
    *              password:
    *                type: string
-   *                default: johnDoe20!@
+   *                default: testpass
    *              cnf_password:
    *                type: string
-   *                default: johnDoe20!@
+   *                default: testpass
    *     responses:
    *      201:
    *        description: Created
@@ -118,6 +118,61 @@ export namespace AuthenticationRoute {
     validateRequest(AuthenticationValidation.SignIn),
     AuthenticationController.SignIn
   ]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+ * @openapi
+ * '/resources/authentication/forgotpassword':
+ *   post:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Email for Forget password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 default: roshandevkota1997@gmail.com
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+
+    Index.post("/authentication/forgotpassword", [
+      validateRequest(AuthenticationValidation.ForgotPassword),
+      AuthenticationController.ForgotPassword,
+    ]);
+
+
+
+
+
+
+
+
 
 
 

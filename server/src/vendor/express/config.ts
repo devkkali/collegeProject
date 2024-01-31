@@ -2,7 +2,7 @@ import { MongooseConfig } from "../mongoose/config.js";
 import express, { Express } from "express";
 import cluster from "cluster";
 import os from "os";
-import swaggerDocs from "../swagger/config.js";
+import { swaggerDocs } from "../index.js";
 
 export class ExpressConfig extends MongooseConfig {
   public app: Express;

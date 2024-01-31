@@ -30,6 +30,23 @@ export namespace AuthenticationController {
   };
 
 
+
+  export const ForgotPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.ForgotPassword(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+
+
+
+
   export const Users = async (
     req: Request,
     res: Response,
