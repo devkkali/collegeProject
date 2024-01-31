@@ -30,8 +30,8 @@ export namespace ClubServices {
         }
     };
     export const GetClub = async (req: Request) => {
-        if (Object.keys(req.query).length>0) {
-            console.log('i am from query',req.query)
+        if (Object.keys(req.query).length > 0) {
+            console.log('i am from query', req.query)
             const filter = { ...req.query }
             try {
                 for (const key in filter) {
@@ -80,27 +80,33 @@ export namespace ClubServices {
 
         try {
             const check_club = await clubModel.Club.find();
-            return Promise.resolve({
-                data: check_club,
-            });
+            return Promise.resolve(
+                check_club,
+            );
 
         } catch (e) {
             return Promise.reject(e);
         }
     };
     export const DeleteClub = async (req: Request) => {
-        if (req.params.id) {
-            var id = req.params.id
-            try {
-                const check_club = await clubModel.Club.findByIdAndDelete(id);
 
-                return Promise.resolve({
-                    data: 'Club Deleted',
+        try {
+            let id = req.params.id
+            const check_club = await clubModel.Club.deleteOne({ _id: id });
+
+            if (check_club.deletedCount === 0) {
+                return Promise.reject({
+                    code: 400,
+                    http_status_code: 404,
+                    error: "Club does not exist",
                 });
-
-            } catch (e) {
-                return Promise.reject(e);
             }
+
+            return Promise.resolve({
+                data: 'Item deleted',
+            });
+        } catch (e) {
+            return Promise.reject(e);
         }
 
     };

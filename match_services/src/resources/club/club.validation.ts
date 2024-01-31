@@ -14,7 +14,7 @@ export namespace ClubValidation {
   export const DeleteClub = {
     params: z
       .object({
-        id: z.custom<mongoose.Types.ObjectId>(),
+        id: z.string(),
       })
       .strict()
   };
