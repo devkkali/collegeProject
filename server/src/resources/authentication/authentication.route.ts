@@ -167,9 +167,40 @@ export namespace AuthenticationRoute {
 
 
 
+  /**
+ * @openapi
+ * '/resources/authentication/setpassword':
+ *   post:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Email for Forget password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 default: roshandevkota1997@gmail.com
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
 
-
-
+  Index.post("/authentication/setpassword", [
+    validateRequest(AuthenticationValidation.SetPassword),
+    AuthenticationController.SetPassword,
+  ]);
 
 
   /**

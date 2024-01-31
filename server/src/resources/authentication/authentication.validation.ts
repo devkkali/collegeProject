@@ -38,4 +38,21 @@ export namespace AuthenticationValidation {
       })
       .strict(),
   };
+
+
+
+
+  export const SetPassword = {
+    body: z
+      .object({
+        token: z.string(),
+        new_password: z.string(),
+        cnf_password: z.string(),
+      })
+      .strict()
+      .refine((data) => data.new_password === data.cnf_password, {
+        message: "Passwords don't match",
+        path: ["cnf_password"],
+      }),
+  };
 }

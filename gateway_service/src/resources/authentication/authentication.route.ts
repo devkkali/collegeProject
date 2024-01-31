@@ -171,7 +171,47 @@ export namespace AuthenticationRoute {
 
 
 
+  /**
+ * @openapi
+ * '/resources/authentication/setpassword':
+ *   post:
+ *     tags:
+ *       - Auth Controller
+ *     summary: reset password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *               - new_password
+ *               - cnf_password
+ *             properties:
+ *               token:
+ *                 type: string
+ *               new_password:
+ *                 type: string
+ *                 default: password
+ *               cnf_password:
+ *                 type: string
+ *                 default: password
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
 
+  Index.post("/authentication/setpassword", [
+    validateRequest(AuthenticationValidation.SetPassword),
+    AuthenticationController.SetPassword,
+  ]);
 
 
 

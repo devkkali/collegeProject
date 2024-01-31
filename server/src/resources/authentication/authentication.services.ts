@@ -125,7 +125,7 @@ export namespace AuthenticationServices {
 
 
   export const ForgotPassword = async (req: Request) => {
-    console.log('RRRROOOORORORORO',req.body)
+    console.log('RRRROOOORORORORO', req.body)
 
     try {
       const check_email = await userModel.User.findOne({
@@ -189,7 +189,38 @@ export namespace AuthenticationServices {
 
 
 
+  export const SetPassword = async (req: Request) => {
+    try {
+      return jwt.verify(
+        req.body.token,
+        process.env.JWT as string,
+        async (err: any, decoded: any) => {
+          if (err) {
+            return Promise.reject({
+              code: 400,
+              http_status_code: 406,
+              error: {
+                message: "Token not acceptable",
+                path: "token",
+              },
+            });
+          } else {
+            const { email } = decoded;
+            await userModel.User.updateOne(
+              { email: email },
+              { $set: { password: req.body.new_password } }
+            );
 
+            return Promise.resolve({
+              message: "Password updated successfully",
+            });
+          }
+        }
+      );
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 
 
 

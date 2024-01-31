@@ -10,7 +10,7 @@ export const ForgotPasswordEmailHelper = async (payload: {
       to: payload.user_email,
       subject: "Forgot Password Verification",
       html: `<a href="${
-        process.env.DEVUI || process.env.PRODUI
+        process.env.GATEWAYURL+":"+process.env.GATEWAYPORT || process.env.PRODUI
       }/?verify_token=${payload.verification_token}">Verify</a>
 `,
     });

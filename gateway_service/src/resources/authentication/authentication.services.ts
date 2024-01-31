@@ -9,7 +9,7 @@ import { error } from "console";
 
 export namespace AuthenticationServices {
   export const SignUp = async (req: Request) => {
-    console.log('asdf',process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup')
+    console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup')
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup', req.body, { headers: req.headers });
       return Promise.resolve({
@@ -61,13 +61,11 @@ export namespace AuthenticationServices {
   };
 
   export const ForgotPassword = async (req: Request) => {
-    console.log('RRRROOOORORORORO',req.body)
+    console.log('RRRROOOORORORORO', req.body)
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/forgotpassword', req.body, { headers: req.headers });
       return Promise.resolve({
         message: authResponse.data.message,
-        token: authResponse.data.token,
-        url: authResponse.data.url,
       });
 
     } catch (e) {
@@ -114,6 +112,7 @@ export namespace AuthenticationServices {
       return Promise.reject(e);
     }
 
+  };
 
 
 
@@ -121,30 +120,26 @@ export namespace AuthenticationServices {
 
 
 
-
-
-
-
-
+  export const SetPassword = async (req: Request) => {
+    console.log('asdf',process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/setpassword')
     try {
-      const check_user = await userModel.User.find()
-      if (check_user)
-        return Promise.resolve({
-          message: check_user,
-        });
+      const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/setpassword', req.body, { headers: req.headers });
+      return Promise.resolve({
+        message: authResponse.data.message,
+      });
 
-
-      if (!check_user) {
-        return Promise.reject({
-          code: 400,
-          http_status_code: 404,
-          error: {
-            message: "User does not exist",
-            path: "uid",
-          },
-        });
-      }
     } catch (e) {
+      console.log('roshanError', e)
+      if (axios.isAxiosError(e)) {
+        const axiosError = e as AxiosError;
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
+        }
+      }
       return Promise.reject(e);
     }
   };
