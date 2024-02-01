@@ -27,7 +27,8 @@ class Main extends ExpressConfig {
           "http://localhost:3000/api",
           "http://192.168.1.4:3000/api",
         ],
-        allowedHeaders:['Content-Type','Access-Control-Allow-Headers']
+        allowedHeaders:['Content-Type','Access-Control-Allow-Headers'],
+        methods:['GET','POST']
       })
     );
 
