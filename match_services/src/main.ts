@@ -20,6 +20,7 @@ class Main extends ExpressConfig {
     this.app.use(
       cors({
         origin: [
+          "*",
           "http://localhost",
           "http://localhost:3000",
           "http://localhost:3000/api",
