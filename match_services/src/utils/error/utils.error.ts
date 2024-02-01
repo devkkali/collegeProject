@@ -12,7 +12,7 @@ export const UtilsError = async (
         error: err.error,
       });
     } else {
-      res.status(500).send("Internal Server Error");
+      res.status(500).json(err);
     }
   } catch (e) {
     next(e);

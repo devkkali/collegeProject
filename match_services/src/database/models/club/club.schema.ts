@@ -11,7 +11,7 @@ export namespace ClubSchema {
       image: {
         type: String,
         default: null,
-      }
+      },
     },
     {
       timestamps: true,

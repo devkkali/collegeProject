@@ -1,21 +1,24 @@
+import mongoose from "mongoose";
 import { z } from "zod";
-
 export namespace ClubValidation {
 
-    export const CreateClub = {
-        body: z
-          .object({
-            name: z.string(),
-            image: z.string(),
-          })
-          .strict()
-      };
-    export const DeleteClub = {
-        body: z
-          .object({
-            id: z.string()
-          })
-          .strict()
-      };
+  export const CreateClub = {
+    body: z
+      .object({
+        name: z.string(),
+        image: z.custom<File>(),
+      })
+      .strict()
+  };
 
+
+
+
+  export const DeleteClub = {
+    params: z
+      .object({
+        id: z.string(),
+      })
+      .strict()
+  };
 }

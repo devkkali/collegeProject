@@ -2,6 +2,7 @@ import { MongooseConfig } from "../mongoose/config.js";
 import express, { Express } from "express";
 import cluster from "cluster";
 import os from "os";
+import swaggerDocs from "../swagger/config.js";
 
 export class ExpressConfig extends MongooseConfig {
   public app: Express;
@@ -31,6 +32,8 @@ export class ExpressConfig extends MongooseConfig {
       const port = process.env.PORT || 4000;
 
       this.app.listen(port, () => {
+        // console.log('aaaa')
+        swaggerDocs(this.app, Number(port))
         console.log(`Server is running on port ${port}`);
       });
     }

@@ -3,6 +3,8 @@ import { userModel } from "../../database/models/user/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { userTypeModel } from "../../database/models/userType/userType.model";
+import { ForgotPasswordEmailHelper } from "../../helper";
+import { SessionModel } from "../../database/models/session/session.model";
 
 export namespace AuthenticationServices {
   export const SignUp = async (req: Request) => {
@@ -61,6 +63,7 @@ export namespace AuthenticationServices {
 
 
   export const SignIn = async (req: Request) => {
+    console.log('user ms sign in', req)
     try {
       const check_user = await userModel.User.findOne({
         $or: [{ email: req.body?.uid }, { username: req.body?.uid }],
@@ -73,7 +76,7 @@ export namespace AuthenticationServices {
         if (!match) {
           return Promise.reject({
             code: 400,
-            http_status_code: 404,
+            http_status_code: 401,
             error: {
               message: "Password not match ",
               path: "password",
@@ -81,7 +84,7 @@ export namespace AuthenticationServices {
           });
         }
 
-        const role = await userTypeModel.UserType.findOne({uid:check_user._id})
+        const role = await userTypeModel.UserType.findOne({ uid: check_user._id })
         console.log(role?.role)
 
         const accessToken = jwt.sign(
@@ -97,7 +100,7 @@ export namespace AuthenticationServices {
         );
 
         return Promise.resolve({
-          message: "Sign in successful ",
+          message: "Sign in successful",
           token: accessToken,
           url: role?.role === "user" ? "/dashboard" : "/system/dashboard",
         });
@@ -105,7 +108,7 @@ export namespace AuthenticationServices {
       if (!check_user) {
         return Promise.reject({
           code: 400,
-          http_status_code: 409,
+          http_status_code: 404,
           error: {
             message: "User does not exist",
             path: "uid",
@@ -117,5 +120,137 @@ export namespace AuthenticationServices {
     }
   };
 
+
+
+
+
+  export const ForgotPassword = async (req: Request) => {
+    console.log('RRRROOOORORORORO', req.body)
+
+    try {
+      const check_email = await userModel.User.findOne({
+        email: req.body?.email,
+      });
+
+      if (check_email) {
+        const check_forgot_password_session =
+          await SessionModel.ForgotPassword.findOne({
+            session_email: check_email.email,
+          });
+
+        const forgot_password_token = jwt.sign(
+          {
+            user_id: check_email._id,
+            email: check_email.email,
+          },
+          process.env.JWT as string,
+          {
+            algorithm: "HS256",
+            expiresIn: "1d",
+          }
+        );
+        if (!check_forgot_password_session) {
+          const new_session_forgot_password = new SessionModel.ForgotPassword({
+            session_email: check_email.email,
+            session_verification_key: forgot_password_token,
+          });
+
+          const save_session_forgot_password =
+            await new_session_forgot_password.save();
+
+          await ForgotPasswordEmailHelper({
+            user_email: save_session_forgot_password.session_email as string,
+            verification_token:
+              save_session_forgot_password.session_verification_key as string,
+          });
+        }
+        await ForgotPasswordEmailHelper({
+          user_email: check_forgot_password_session?.session_email as string,
+          verification_token:
+            check_forgot_password_session?.session_verification_key as string,
+        });
+        return Promise.resolve({
+          message: "Forgot Password Email Sent On your Email Address",
+        });
+      }
+      return Promise.reject({
+        code: 400,
+        http_status_code: 409,
+        error: {
+          message: "User does not exist",
+          path: "email",
+        },
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+
+
+
+  export const SetPassword = async (req: Request) => {
+    try {
+      return jwt.verify(
+        req.body.token,
+        process.env.JWT as string,
+        async (err: any, decoded: any) => {
+          if (err) {
+            return Promise.reject({
+              code: 400,
+              http_status_code: 406,
+              error: {
+                message: "Token not acceptable",
+                path: "token",
+              },
+            });
+          } else {
+            const { email } = decoded;
+            await userModel.User.updateOne(
+              { email: email },
+              { $set: { password: req.body.new_password } }
+            );
+
+            return Promise.resolve({
+              message: "Password updated successfully",
+            });
+          }
+        }
+      );
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+
+
+
+
+  export const Users = async (req: Request) => {
+    console.log('head', req.headers)
+    try {
+      const check_user = await userModel.User.find()
+      console.log("users", check_user)
+      if (check_user)
+        return Promise.resolve({
+          message: 'success',
+          data: check_user
+        });
+
+
+      if (!check_user) {
+        return Promise.reject({
+          code: 400,
+          http_status_code: 404,
+          error: {
+            message: "User does not exist",
+            path: "uid",
+          },
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 
 }

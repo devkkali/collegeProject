@@ -22,8 +22,57 @@ export namespace AuthenticationController {
     res: Response,
     next: NextFunction
   ) => {
+    console.log('sign in from controller')
     try {
       res.status(200).json(await AuthenticationServices.SignIn(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+
+
+
+
+
+
+
+  export const ForgotPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.ForgotPassword(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+
+
+  export const SetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.SetPassword(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+  
+
+
+
+  export const Users = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.Users(req));
     } catch (e) {
       next(e);
     }

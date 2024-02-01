@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { CommonType } from "../commontype";
 
 export namespace Type {

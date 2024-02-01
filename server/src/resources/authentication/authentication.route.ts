@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, request } from "express";
 import { AuthenticationController, AuthenticationServices, AuthenticationValidation } from "./index.js";
 import { validateRequest } from "zod-express-middleware";
 
@@ -117,5 +117,110 @@ export namespace AuthenticationRoute {
   Index.post("/authentication/signin", [
     validateRequest(AuthenticationValidation.SignIn),
     AuthenticationController.SignIn
+  ]);
+
+
+
+
+
+
+
+
+
+
+
+  /**
+ * @openapi
+ * '/resources/authentication/forgotpassword':
+ *   post:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Email for Forget password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 default: roshandevkota1997@gmail.com
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+
+  Index.post("/authentication/forgotpassword", [
+    validateRequest(AuthenticationValidation.ForgotPassword),
+    AuthenticationController.ForgotPassword,
+  ]);
+
+
+
+
+  /**
+ * @openapi
+ * '/resources/authentication/setpassword':
+ *   post:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Email for Forget password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 default: roshandevkota1997@gmail.com
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+
+  Index.post("/authentication/setpassword", [
+    validateRequest(AuthenticationValidation.SetPassword),
+    AuthenticationController.SetPassword,
+  ]);
+
+
+  /**
+ * @openapi
+ * '/resources/authentication/users':
+ *   get:
+ *     tags:
+ *       - Auth Controller
+ *     summary: Sign in a user
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+  Index.get("/authentication/users", [
+    AuthenticationController.Users
   ]);
 }
