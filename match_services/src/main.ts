@@ -21,12 +21,13 @@ class Main extends ExpressConfig {
       cors({
         origin: [
           "*",
+          'Access-Control-Allow-Origin',
           "http://localhost",
           "http://localhost:3000",
           "http://localhost:3000/api",
           "http://192.168.1.4:3000/api",
         ],
-        allowedHeaders:['Content-Type']
+        allowedHeaders:['Content-Type','Access-Control-Allow-Headers']
       })
     );
 
