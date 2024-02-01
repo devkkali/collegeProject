@@ -3,10 +3,59 @@ import React from "react";
 import { SignInScreenForm } from "@/screens/form/signin.screen.form";
 import Link from "next/link";
 
+
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { ourGoogleAuth } from "@/services/firebase/firebase";
+import { useMutation } from "@tanstack/react-query";
+import { AuthenticationServicesType } from "@/services/authentication/type";
+import { AuthenticationServices } from "@/services/authentication/authentication.services";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+
+
 export const SignInScreen: React.FC = () => {
+  const router = useRouter();
+  const googleAuth = new GoogleAuthProvider();
+  const loginWithGoogle = async () => {
+
+    // console.log('hello')
+
+    const result = await signInWithPopup(ourGoogleAuth, googleAuth);
+
+
+    console.log('Google sign credentioals:', result.user)
+
+    try {
+      await mutateAsync({ email: (result.user.email as string), token: result.user.refreshToken });
+    } catch (e) { }
+
+
+  }
+  const { mutateAsync, isPending } = useMutation<
+    AuthenticationServicesType.SignInRes,
+    Error,
+    AuthenticationServicesType.GoogleSignInProps
+  >({
+    mutationFn: (variables) => AuthenticationServices.SignInWithGoogle(variables),
+    onSuccess: (data) => {
+      Cookies.set("token", data.token);
+      router.replace(data.url);
+    },
+    onError: (error) => {
+      const AxiosErr = error as AxiosError;
+      const err = AxiosErr?.response?.data as {
+        message: string;
+        path: "username" | "password";
+      };
+    },
+  });
+
+
+
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className= "flex flex-col items-center justify-start w-[400px] h-[580px] bg-white p-4 border rounded-md shadow-md">
+      <div className="flex flex-col items-center justify-start w-[400px] h-[580px] bg-white p-4 border rounded-md shadow-md">
         <div className="flex flex-col justify-between items-start p-1.5 w-full h-full">
           <div className={"w-full"}>
             <h2 className={"text-[24px] font-bold text-slate-900"}>
@@ -23,7 +72,7 @@ export const SignInScreen: React.FC = () => {
             }
           >
             <p className={"mt-3 text-[18px] font-bold text-slate-400"}>OR</p>
-            <button
+            <button onClick={loginWithGoogle}
               className={
                 "flex flex-row items-center justify-center gap-3 rounded w-full h-fit p-3 ring-black ring-1"
               }

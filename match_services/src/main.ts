@@ -31,7 +31,7 @@ class Main extends ExpressConfig {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use("/resources",[RoutesPrivateRoute.Index])
-    // this.app.use("/uploads", express.static("./uploads"));
+    this.app.use("/uploads", express.static("./uploads"));
     // this.app.use("/resources", [
     //   TokenVerificationUtils,
     //   UtilsPermission,

@@ -1,4 +1,4 @@
-import { CommonType, TRole } from "../commontype";
+import { CommonType } from "../commontype";
 
 export namespace Type {
   interface permission {
@@ -15,7 +15,7 @@ export namespace Type {
       | "TRACE"
       | "PATCH"
     >;
-    permission_allowed_role: Array<TRole>;
+    permission_allowed_role: Array<CommonType.TRole>;
     permission_status: "0" | "1";
   }
 }
