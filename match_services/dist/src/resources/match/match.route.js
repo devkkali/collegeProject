@@ -59,7 +59,7 @@ var MatchRoute;
    *         500:
    *           description: Internal Server Error
    */
-    MatchRoute.Index.post("/admin/match", [(0, zod_express_middleware_1.validateRequest)(match_validation_js_1.MatchValidation.CreateMatch), match_controller_js_1.MatchController.CreateMatch]);
-    MatchRoute.Index.delete("/admin/match/:id", [index_js_1.UtilValidation.Id, match_controller_js_1.MatchController.DeleteMatch]);
-    MatchRoute.Index.patch("/admin/match/:id", [match_controller_js_1.MatchController.UpdateMatch]);
+    MatchRoute.Index.post("/match", [(0, zod_express_middleware_1.validateRequest)(match_validation_js_1.MatchValidation.CreateMatch), match_controller_js_1.MatchController.CreateMatch]);
+    MatchRoute.Index.delete("/match/:id", [index_js_1.UtilValidation.Id, match_controller_js_1.MatchController.DeleteMatch]);
+    MatchRoute.Index.patch("/match/:id", [match_controller_js_1.MatchController.UpdateMatch]);
 })(MatchRoute || (exports.MatchRoute = MatchRoute = {}));
