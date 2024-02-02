@@ -66,7 +66,7 @@ var MatchServices;
             }
         }
         try {
-            const check_match = await match_model_1.matchModel.Match.find();
+            const check_match = await match_model_1.matchModel.Match.find().populate('team1').populate('team2').exec();
             return Promise.resolve(check_match);
         }
         catch (e) {

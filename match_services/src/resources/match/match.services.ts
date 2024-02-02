@@ -81,7 +81,7 @@ export namespace MatchServices {
         }
 
         try {
-            const check_match = await matchModel.Match.find();
+            const check_match = await matchModel.Match.find().populate('team1').populate('team2').exec();
             return Promise.resolve(
                 check_match
             );

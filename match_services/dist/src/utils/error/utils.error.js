@@ -5,7 +5,7 @@ const UtilsError = async (err, req, res, next) => {
     try {
         if (err.code === 400) {
             res.status(err.http_status_code).json({
-                error: err.error,
+                ...err.error,
             });
         }
         else {

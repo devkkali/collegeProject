@@ -31,7 +31,7 @@ var MatchSchema;
         status: {
             type: String,
             enum: [-1, 0, 1],
-            default: null
+            default: 1
         }
     }, {
         timestamps: true,
