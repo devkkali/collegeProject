@@ -8,9 +8,7 @@ var PlayerServices;
         try {
             const new_player = new player_model_1.playerModel.Player({ name: req.body.name, age: req.body.age, player_type: req.body.player_type, club_id: req.body.club_id });
             const save_player = await new_player.save();
-            return Promise.resolve({
-                data: save_player,
-            });
+            return Promise.resolve(save_player);
         }
         catch (e) {
             return Promise.reject(e);
@@ -29,12 +27,13 @@ var PlayerServices;
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Player does not exist",
+                        error: {
+                            message: "Player does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: check_player,
-                });
+                return Promise.resolve(check_player);
             }
             catch (e) {
                 return Promise.reject(e);
@@ -49,12 +48,13 @@ var PlayerServices;
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Player does not exist",
+                        error: {
+                            message: "Player does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: check_player,
-                });
+                return Promise.resolve(check_player);
             }
             catch (e) {
                 return Promise.reject(e);
@@ -76,11 +76,14 @@ var PlayerServices;
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Player does not exist",
+                    error: {
+                        message: "Player does not exist",
+                        path: "name",
+                    },
                 });
             }
             return Promise.resolve({
-                data: 'Player deleted',
+                message: 'Player deleted',
             });
         }
         catch (e) {
@@ -100,15 +103,16 @@ var PlayerServices;
                 const result = await player_model_1.playerModel.Player.updateOne({ _id: req.params.id }, { $set: req.body });
                 console.log(result);
                 const returnPlayer = await player_model_1.playerModel.Player.findById(req.params.id);
-                return Promise.resolve({
-                    data: returnPlayer,
-                });
+                return Promise.resolve(returnPlayer);
             }
             if (!check_player) {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Player does not exist",
+                    error: {
+                        message: "Player does not exist",
+                        path: "name",
+                    },
                 });
             }
         }
