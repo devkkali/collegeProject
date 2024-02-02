@@ -11,7 +11,10 @@ var ClubServices;
             return Promise.reject({
                 code: 400,
                 http_status_code: 404,
-                error: 'Files not available',
+                error: {
+                    message: "Image not available ",
+                    path: "image",
+                },
             });
         }
         // console.log(req.files?['image'][0]:[]   )
@@ -27,15 +30,16 @@ var ClubServices;
                 // console.log(club_details)
                 const new_club = new club_model_1.clubModel.Club({ name: req.body.name, image: `/uploads/private/images/${files.image[0].filename}` });
                 const save_club = await new_club.save();
-                return Promise.resolve({
-                    data: save_club,
-                });
+                return Promise.resolve(save_club);
             }
             if (check_club) {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 409,
-                    error: "Club already exist",
+                    error: {
+                        message: "Club already exist.",
+                        path: "name",
+                    },
                 });
             }
         }
@@ -56,12 +60,13 @@ var ClubServices;
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Club does not exist",
+                        error: {
+                            message: "Club does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: check_club,
-                });
+                return Promise.resolve(check_club);
             }
             catch (e) {
                 return Promise.reject(e);
@@ -89,12 +94,13 @@ var ClubServices;
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Club does not exist",
+                        error: {
+                            message: "Club does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: clubWithPlayers,
-                });
+                return Promise.resolve(clubWithPlayers);
             }
             catch (e) {
                 return Promise.reject(e);
@@ -116,11 +122,14 @@ var ClubServices;
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Club does not exist",
+                    error: {
+                        message: "Club does not exist",
+                        path: "name",
+                    },
                 });
             }
             return Promise.resolve({
-                data: 'Club deleted',
+                message: 'Club deleted',
             });
         }
         catch (e) {
@@ -141,15 +150,16 @@ var ClubServices;
             }
             const check_club = await club_model_1.clubModel.Club.findOneAndUpdate({ _id: req.params?.id }, { $set: updateFields }, { new: true });
             if (check_club) {
-                return Promise.resolve({
-                    data: check_club,
-                });
+                return Promise.resolve(check_club);
             }
             else {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: 'Club does not exist',
+                    error: {
+                        message: "Club does not exist",
+                        path: "name",
+                    },
                 });
             }
         }

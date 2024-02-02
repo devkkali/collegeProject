@@ -13,7 +13,10 @@ export namespace ClubServices {
             return Promise.reject({
                 code: 400,
                 http_status_code: 404,
-                error: 'Files not available',
+                error: {
+                    message: "Image not available ",
+                    path: "image",
+                },
             });
         }
 
@@ -36,15 +39,18 @@ export namespace ClubServices {
 
                 const new_club = new clubModel.Club({ name: req.body.name, image: `/uploads/private/images/${files.image[0].filename}` });
                 const save_club = await new_club.save();
-                return Promise.resolve({
-                    data: save_club,
-                });
+                return Promise.resolve(
+                    save_club
+                );
             }
             if (check_club) {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 409,
-                    error: "Club already exist",
+                    error: {
+                        message: "Club already exist.",
+                        path: "name",
+                    },
                 });
             }
         } catch (e) {
@@ -68,12 +74,15 @@ export namespace ClubServices {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Club does not exist",
+                        error: {
+                            message: "Club does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: check_club,
-                });
+                return Promise.resolve(
+                    check_club,
+                );
 
             } catch (e) {
                 return Promise.reject(e);
@@ -106,12 +115,15 @@ export namespace ClubServices {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Club does not exist",
+                        error: {
+                            message: "Club does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: clubWithPlayers,
-                });
+                return Promise.resolve(
+                    clubWithPlayers
+                );
 
             } catch (e) {
                 return Promise.reject(e);
@@ -139,12 +151,15 @@ export namespace ClubServices {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Club does not exist",
+                    error: {
+                        message: "Club does not exist",
+                        path: "name",
+                    },
                 });
             }
 
             return Promise.resolve({
-                data: 'Club deleted',
+                message: 'Club deleted',
             });
         } catch (e) {
             return Promise.reject(e);
@@ -154,42 +169,45 @@ export namespace ClubServices {
 
     export const UpdateClub = async (req: Request) => {
         try {
-          const files = req?.files as unknown as CommonType.Iimage;
-      
-          console.log(files?.image && files.image.length > 0 ? files.image[0].destination + '' + files.image[0].filename : 'No image provided');
-          console.log('req', req.body);
-      
-          const updateFields: any = {};
-      
-          if (req.body.name) {
-            updateFields.name = req.body.name;
-          }
-      
-          if (files && files.image && files.image.length > 0) {
-            updateFields.image = `/uploads/private/images/${files.image[0].filename}`;
-          }
-      
-          const check_club = await clubModel.Club.findOneAndUpdate(
-            { _id: req.params?.id },
-            { $set: updateFields },
-            { new: true }
-          );
-      
-          if (check_club) {
-            return Promise.resolve({
-              data: check_club,
-            });
-          } else {
-            return Promise.reject({
-              code: 400,
-              http_status_code: 404,
-              error: 'Club does not exist',
-            });
-          }
+            const files = req?.files as unknown as CommonType.Iimage;
+
+            console.log(files?.image && files.image.length > 0 ? files.image[0].destination + '' + files.image[0].filename : 'No image provided');
+            console.log('req', req.body);
+
+            const updateFields: any = {};
+
+            if (req.body.name) {
+                updateFields.name = req.body.name;
+            }
+
+            if (files && files.image && files.image.length > 0) {
+                updateFields.image = `/uploads/private/images/${files.image[0].filename}`;
+            }
+
+            const check_club = await clubModel.Club.findOneAndUpdate(
+                { _id: req.params?.id },
+                { $set: updateFields },
+                { new: true }
+            );
+
+            if (check_club) {
+                return Promise.resolve(
+                    check_club
+                );
+            } else {
+                return Promise.reject({
+                    code: 400,
+                    http_status_code: 404,
+                    error: {
+                        message: "Club does not exist",
+                        path: "name",
+                    },
+                });
+            }
         } catch (e) {
-          return Promise.reject(e);
+            return Promise.reject(e);
         }
-      };
-      
-      
+    };
+
+
 }

@@ -31,6 +31,20 @@ export namespace AuthenticationController {
   };
 
 
+  // export const GoogleSignIn = async (
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ) => {
+  //   console.log('sign in from controller')
+  //   try {
+  //     res.status(200).json(await AuthenticationServices.GoogleSignIn(req));
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // };
+
+
 
 
 

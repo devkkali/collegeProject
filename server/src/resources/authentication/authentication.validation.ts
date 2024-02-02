@@ -30,6 +30,15 @@ export namespace AuthenticationValidation {
       .strict(),
   };
 
+  export const GoogleSignIn = {
+    body: z
+      .object({
+        uid: z.string(),
+        
+      })
+      .strict(),
+  };
+
 
   export const ForgotPassword = {
     body: z

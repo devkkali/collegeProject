@@ -21,6 +21,8 @@ class Main extends vendor_1.ExpressConfig {
     middlewares() {
         this.app.use((0, cors_1.default)({
             origin: [
+                "http://localhost:3000",
+                "http://localhost:3000",
                 "http://localhost:3000/api",
                 "https://loan-client.vercel.app/api",
                 "http://192.168.1.4:3000/api",

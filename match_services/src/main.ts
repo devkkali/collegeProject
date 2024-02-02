@@ -20,15 +20,12 @@ class Main extends ExpressConfig {
     this.app.use(
       cors({
         origin: [
-          "*",
-          'Access-Control-Allow-Origin',
-          "http://localhost",
+          "http://localhost:3000",
           "http://localhost:3000",
           "http://localhost:3000/api",
+          "https://loan-client.vercel.app/api",
           "http://192.168.1.4:3000/api",
         ],
-        allowedHeaders:['Content-Type','Access-Control-Allow-Headers'],
-        methods:['GET','POST']
       })
     );
 
