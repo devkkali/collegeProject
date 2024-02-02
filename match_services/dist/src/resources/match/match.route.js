@@ -9,8 +9,8 @@ const match_validation_js_1 = require("./match.validation.js");
 var MatchRoute;
 (function (MatchRoute) {
     MatchRoute.Index = (0, express_1.Router)();
-    MatchRoute.Index.get("/admin/match", [match_controller_js_1.MatchController.GetMatch]);
-    MatchRoute.Index.get("/admin/match/:id", [match_controller_js_1.MatchController.GetMatch]);
+    MatchRoute.Index.get("/match", [match_controller_js_1.MatchController.GetMatch]);
+    MatchRoute.Index.get("/match/:id", [match_controller_js_1.MatchController.GetMatch]);
     // Index.get("/club/search", [ClubController.GetClub]);
     /**
    * @openapi

@@ -9,8 +9,8 @@ export namespace MatchRoute {
 
 
 
-  Index.get("/admin/match", [MatchController.GetMatch]);
-  Index.get("/admin/match/:id", [MatchController.GetMatch]);
+  Index.get("/match", [MatchController.GetMatch]);
+  Index.get("/match/:id", [MatchController.GetMatch]);
   // Index.get("/club/search", [ClubController.GetClub]);
 
 
