@@ -113,12 +113,44 @@ export namespace AuthenticationRoute {
  *         description: Not Found
  *       500:
  *         description: Server Error
- */
-  Index.post("/authentication/signin", [
-    validateRequest(AuthenticationValidation.SignIn),
-    AuthenticationController.SignIn
+  */
+ Index.post("/authentication/signin", [
+   validateRequest(AuthenticationValidation.SignIn),
+   AuthenticationController.SignIn
   ]);
-
+  /**
+   * @openapi
+   * '/resources/authentication/googlesignin':
+   *   post:
+   *     tags:
+   *       - Auth Controller
+   *     summary: Sign in a user
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - gtoken
+   *             properties:
+   *               gtoken:
+   *                 type: string
+   *                 default: eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkYzRlMTA5ODE1ZjQ2OTQ2MGU2M2QzNGNkNjg0MjE1MTQ4ZDdiNTkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNzk3MDE1ODE2MTcxLTg3ZTV2NXIwaGZlMWt1dWliamQ0dHVkYXM0YmtmM283LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNzk3MDE1ODE2MTcxLTg3ZTV2NXIwaGZlMWt1dWliamQ0dHVkYXM0YmtmM283LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAyMTA2Nzk0NjgwMTA2ODcxNzUzIiwiZW1haWwiOiJyb3NoYW5kZXZrb3RhMTk5N0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Imhkb21nWVdIUURMeGw4ZE9tZXc1YkEiLCJpYXQiOjE3MDY4NzE3MjAsImV4cCI6MTcwNjg3NTMyMH0.YAa3njmTnLoukrXY4UmsA36g2j-nSFjW4u3_rnfUCby77kB1NFrLvn28bh2LaNszY-_yTO2OzRvCgtGroFPtJzRpbRnTYPIL0eCHvzJDRjuvv8N6zHSe1Zlm-Cb9POAzVzSq40vjO5qVOgQB5IZzbwq88Q_ugaI1Awg3UvB_Y02zW09hqCAiBujeSsHZKqen-nc98KpkgnGzzT-6Q9BamYVa-GyP4AvIdaE3IwAJZ10f_4CYLTWKaYch-GMqRbwSEy4Isk3z2pkltcdkOZKlOXFm8z7d_bTHBvoe-MwFQ3MKbSN4Luwjr35lz1lXm0c28mMcMWM935UjuIlmeeMdtg
+   *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+  Index.post("/authentication/googlesignin", [
+    validateRequest(AuthenticationValidation.GoogleSignIn),
+    AuthenticationController.GoogleSignIn
+  ]);
 
 
 

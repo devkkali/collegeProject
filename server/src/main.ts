@@ -16,15 +16,31 @@ class Main extends ExpressConfig {
   }
 
   private middlewares() {
-    this.app.use(
-      cors({
-        origin: [
-          "http://localhost:3000/api",
-          "https://loan-client.vercel.app/api",
-          "http://192.168.1.4:3000/api",
-        ],
-      })
-    );
+    // this.app.use(
+    //   cors({
+    //     origin: [
+    //       "http://localhost:3000/api",
+    //       "https://loan-client.vercel.app/api",
+    //       "http://192.168.1.4:3000/api",
+    //     ],
+    //   })
+    // );
+
+    const allowedOrigins = [
+      "http://localhost:3000/api",
+      "https://loan-client.vercel.app/api",
+      "http://192.168.1.4:3000/api"
+    ];
+
+    const corsOptions = {
+      origin: allowedOrigins,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+      optionsSuccessStatus: 204,
+    };
+
+    this.app.use(cors(corsOptions));
+
 
     this.app.use(cookieParser());
     this.app.use(morgan("dev"));

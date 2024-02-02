@@ -33,8 +33,7 @@ export namespace AuthenticationValidation {
   export const GoogleSignIn = {
     body: z
       .object({
-        uid: z.string(),
-        
+        gtoken: z.string(),
       })
       .strict(),
   };

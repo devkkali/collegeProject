@@ -30,6 +30,19 @@ export namespace AuthenticationController {
   };
 
 
+  export const GoogleSignIn = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.log('sign in from controller')
+    try {
+      res.status(200).json(await AuthenticationServices.SignInV2(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
 
   export const ForgotPassword = async (
     req: Request,
