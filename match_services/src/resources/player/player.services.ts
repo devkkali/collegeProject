@@ -73,7 +73,7 @@ export namespace PlayerServices {
         }
 
         try {
-            const check_player = await playerModel.Player.find();
+            const check_player = await playerModel.Player.find().populate('club_id').exec();
             return Promise.resolve(
                 check_player
             );

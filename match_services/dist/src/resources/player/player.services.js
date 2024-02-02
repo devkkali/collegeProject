@@ -61,7 +61,7 @@ var PlayerServices;
             }
         }
         try {
-            const check_player = await player_model_1.playerModel.Player.find();
+            const check_player = await player_model_1.playerModel.Player.find().populate('club_id').exec();
             return Promise.resolve(check_player);
         }
         catch (e) {
