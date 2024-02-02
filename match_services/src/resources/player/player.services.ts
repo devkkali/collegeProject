@@ -9,7 +9,11 @@ export namespace PlayerServices {
             const new_player = new playerModel.Player({ name: req.body.name, age: req.body.age, player_type: req.body.player_type, club_id: req.body.club_id });
             const save_player = await new_player.save();
             return Promise.resolve(
-               save_player
+                {
+                    'data':save_player,
+                    'message': 'Player Created Successfully.',
+                    'url': 'system/dashboard/players'
+                }
             );
 
         } catch (e) {

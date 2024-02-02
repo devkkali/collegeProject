@@ -8,7 +8,11 @@ var PlayerServices;
         try {
             const new_player = new player_model_1.playerModel.Player({ name: req.body.name, age: req.body.age, player_type: req.body.player_type, club_id: req.body.club_id });
             const save_player = await new_player.save();
-            return Promise.resolve(save_player);
+            return Promise.resolve({
+                'data': save_player,
+                'message': 'Player Created Successfully.',
+                'url': 'system/dashboard/players'
+            });
         }
         catch (e) {
             return Promise.reject(e);

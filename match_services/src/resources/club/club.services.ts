@@ -40,10 +40,9 @@ export namespace ClubServices {
                 const new_club = new clubModel.Club({ name: req.body.name, image: `/uploads/private/images/${files.image[0].filename}` });
                 const save_club = await new_club.save();
                 return Promise.resolve({
-                    'club':save_club,
-                    'message': 'Club Creaded Success',
+                    'data': save_club,
+                    'message': 'Club Created Successfully',
                     'url': 'system/dashboard/clubs'
-
                 }
                 );
             }
