@@ -107,7 +107,11 @@ var PlayerServices;
                 const result = await player_model_1.playerModel.Player.updateOne({ _id: req.params.id }, { $set: req.body });
                 console.log(result);
                 const returnPlayer = await player_model_1.playerModel.Player.findById(req.params.id);
-                return Promise.resolve(returnPlayer);
+                return Promise.resolve({
+                    'data': returnPlayer,
+                    'message': 'Player Edited Successfully',
+                    'url': 'system/dashboard/players'
+                });
             }
             if (!check_player) {
                 return Promise.reject({

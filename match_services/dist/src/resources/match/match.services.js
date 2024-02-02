@@ -9,7 +9,11 @@ var MatchServices;
             const match_details = req.body;
             const new_match = new match_model_1.matchModel.Match(match_details);
             const save_match = await new_match.save();
-            return Promise.resolve(save_match);
+            return Promise.resolve({
+                'data': save_match,
+                'message': 'Match Created Successfully',
+                'url': 'system/dashboard/matches'
+            });
         }
         catch (e) {
             return Promise.reject(e);
@@ -104,7 +108,11 @@ var MatchServices;
                 const result = await match_model_1.matchModel.Match.updateOne({ _id: req.params.id }, { $set: req.body });
                 console.log(result);
                 const returnmatch = await match_model_1.matchModel.Match.findById(req.params.id);
-                return Promise.resolve(returnmatch);
+                return Promise.resolve({
+                    'data': returnmatch,
+                    'message': 'Match Edited Successfully',
+                    'url': 'system/dashboard/matches'
+                });
             }
             if (!check_match) {
                 return Promise.reject({

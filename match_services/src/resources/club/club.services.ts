@@ -195,7 +195,12 @@ export namespace ClubServices {
 
             if (check_club) {
                 return Promise.resolve(
-                    check_club
+                    {
+                        'data': check_club,
+                        'message': 'Club Edited Successfully',
+                        'url': 'system/dashboard/clubs'
+                    }
+                    
                 );
             } else {
                 return Promise.reject({

@@ -11,7 +11,11 @@ export namespace MatchServices {
             const new_match = new matchModel.Match(match_details);
             const save_match = await new_match.save();
             return Promise.resolve(
-                save_match
+                {
+                    'data': save_match,
+                    'message': 'Match Created Successfully',
+                    'url': 'system/dashboard/matches'
+                }
             );
 
         } catch (e) {
@@ -134,7 +138,12 @@ export namespace MatchServices {
 
 
                 return Promise.resolve(
-                    returnmatch
+                    {
+                        'data': returnmatch,
+                        'message': 'Match Edited Successfully',
+                        'url': 'system/dashboard/matches'
+                    }
+                    
                 );
             }
             if (!check_match) {

@@ -154,7 +154,11 @@ var ClubServices;
             }
             const check_club = await club_model_1.clubModel.Club.findOneAndUpdate({ _id: req.params?.id }, { $set: updateFields }, { new: true });
             if (check_club) {
-                return Promise.resolve(check_club);
+                return Promise.resolve({
+                    'data': check_club,
+                    'message': 'Club Edited Successfully',
+                    'url': 'system/dashboard/clubs'
+                });
             }
             else {
                 return Promise.reject({

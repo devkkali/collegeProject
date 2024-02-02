@@ -133,7 +133,12 @@ export namespace PlayerServices {
 
 
                 return Promise.resolve(
-                    returnPlayer
+                    {
+                        'data': returnPlayer,
+                        'message': 'Player Edited Successfully',
+                        'url': 'system/dashboard/players'
+                    }
+                    
                 );
             }
             if (!check_player) {
