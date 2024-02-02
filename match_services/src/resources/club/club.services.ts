@@ -14,7 +14,7 @@ export namespace ClubServices {
                 code: 400,
                 http_status_code: 404,
                 error: {
-                    message: "Image not available ",
+                    message: "Image not available.",
                     path: "image",
                 },
             });
@@ -39,8 +39,12 @@ export namespace ClubServices {
 
                 const new_club = new clubModel.Club({ name: req.body.name, image: `/uploads/private/images/${files.image[0].filename}` });
                 const save_club = await new_club.save();
-                return Promise.resolve(
-                    save_club
+                return Promise.resolve({
+                    'club':save_club,
+                    'message': 'Club Creaded Success',
+                    'url': 'system/dashboard/clubs'
+
+                }
                 );
             }
             if (check_club) {

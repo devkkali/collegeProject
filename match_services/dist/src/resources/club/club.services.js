@@ -12,7 +12,7 @@ var ClubServices;
                 code: 400,
                 http_status_code: 404,
                 error: {
-                    message: "Image not available ",
+                    message: "Image not available.",
                     path: "image",
                 },
             });
@@ -30,7 +30,11 @@ var ClubServices;
                 // console.log(club_details)
                 const new_club = new club_model_1.clubModel.Club({ name: req.body.name, image: `/uploads/private/images/${files.image[0].filename}` });
                 const save_club = await new_club.save();
-                return Promise.resolve(save_club);
+                return Promise.resolve({
+                    'club': save_club,
+                    'message': 'Club Creaded Success',
+                    'url': 'system/dashboard/clubs'
+                });
             }
             if (check_club) {
                 return Promise.reject({
