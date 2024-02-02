@@ -9,9 +9,7 @@ var MatchServices;
             const match_details = req.body;
             const new_match = new match_model_1.matchModel.Match(match_details);
             const save_match = await new_match.save();
-            return Promise.resolve({
-                data: save_match,
-            });
+            return Promise.resolve(save_match);
         }
         catch (e) {
             return Promise.reject(e);
@@ -30,12 +28,13 @@ var MatchServices;
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Match does not exist",
+                        error: {
+                            message: "Match does not exist",
+                            path: "name",
+                        },
                     });
                 }
-                return Promise.resolve({
-                    data: check_match,
-                });
+                return Promise.resolve(check_match);
             }
             catch (e) {
                 return Promise.reject(e);
@@ -50,7 +49,10 @@ var MatchServices;
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Match does not exist",
+                        error: {
+                            message: "Match does not exist",
+                            path: "name",
+                        },
                     });
                 }
                 return Promise.resolve(check_match);
@@ -75,11 +77,14 @@ var MatchServices;
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Match does not exist",
+                    error: {
+                        message: "Match does not exist",
+                        path: "name",
+                    },
                 });
             }
             return Promise.resolve({
-                data: 'Match deleted',
+                message: 'Match deleted',
             });
         }
         catch (e) {
@@ -99,15 +104,16 @@ var MatchServices;
                 const result = await match_model_1.matchModel.Match.updateOne({ _id: req.params.id }, { $set: req.body });
                 console.log(result);
                 const returnmatch = await match_model_1.matchModel.Match.findById(req.params.id);
-                return Promise.resolve({
-                    data: returnmatch,
-                });
+                return Promise.resolve(returnmatch);
             }
             if (!check_match) {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Club does not exist",
+                    error: {
+                        message: "Match does not exist",
+                        path: "name",
+                    },
                 });
             }
         }

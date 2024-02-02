@@ -10,9 +10,9 @@ export namespace MatchServices {
             const match_details = req.body;
             const new_match = new matchModel.Match(match_details);
             const save_match = await new_match.save();
-            return Promise.resolve({
-                data: save_match,
-            });
+            return Promise.resolve(
+                save_match
+            );
 
         } catch (e) {
             return Promise.reject(e);
@@ -38,12 +38,15 @@ export namespace MatchServices {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Match does not exist",
+                        error: {
+                            message: "Match does not exist",
+                            path: "name",
+                          },
                     });
                 }
-                return Promise.resolve({
-                    data: check_match,
-                });
+                return Promise.resolve(
+                    check_match
+                );
 
             } catch (e) {
                 return Promise.reject(e);
@@ -58,7 +61,10 @@ export namespace MatchServices {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Match does not exist",
+                        error: {
+                            message: "Match does not exist",
+                            path: "name",
+                          },
                     });
                 }
                 return Promise.resolve(
@@ -73,7 +79,7 @@ export namespace MatchServices {
         try {
             const check_match = await matchModel.Match.find();
             return Promise.resolve(
-                check_match,
+                check_match
             );
 
         } catch (e) {
@@ -91,12 +97,15 @@ export namespace MatchServices {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Match does not exist",
+                    error: {
+                        message: "Match does not exist",
+                        path: "name",
+                      },
                 });
             }
 
             return Promise.resolve({
-                data: 'Match deleted',
+                message: 'Match deleted',
             });
         } catch (e) {
             return Promise.reject(e);
@@ -124,15 +133,18 @@ export namespace MatchServices {
                 const returnmatch = await matchModel.Match.findById(req.params.id);
 
 
-                return Promise.resolve({
-                    data: returnmatch,
-                });
+                return Promise.resolve(
+                    returnmatch
+                );
             }
             if (!check_match) {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Club does not exist",
+                    error: {
+                        message: "Match does not exist",
+                        path: "name",
+                      },
                 });
             }
         } catch (e) {
