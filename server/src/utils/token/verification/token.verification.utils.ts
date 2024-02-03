@@ -19,6 +19,7 @@ export const TokenVerificationUtils = async (
       next();
       return;
     }
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     const { token } = await TokenSplitUtils(req.headers.authorization);
     const token2 = req.cookies?.["accessToken"];
 
