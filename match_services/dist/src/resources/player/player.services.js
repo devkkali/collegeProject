@@ -105,7 +105,7 @@ var PlayerServices;
                 // const new_club = new clubModel.Club(club_details);
                 // const save_club = await new_club.save();
                 const result = await player_model_1.playerModel.Player.updateOne({ _id: req.params.id }, { $set: req.body });
-                // console.log('RRRRR', result);
+                console.log('RRRRR', result);
                 const returnPlayer = await player_model_1.playerModel.Player.findById(req.params.id);
                 return Promise.resolve({
                     'data': returnPlayer,
