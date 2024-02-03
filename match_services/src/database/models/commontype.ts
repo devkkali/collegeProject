@@ -1,6 +1,7 @@
 export namespace CommonType {
   export type TGender = "male" | "female" | "other";
   export type TPlayerType = "goalkipper" | "defender" | "midfielder" | "forward";
+  export type TEventsType = "goal" | "assist" | "yellow" | "red" | "substitutedin"| "substitutedout" | "isinitial";
   export type TGameStatusType = -1 | 0 | 1;
   export type TRole = "admin" | "user" | "*";
   export type TString = string | null | undefined;

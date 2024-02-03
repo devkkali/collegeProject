@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./error/utils.error.js"), exports);
 __exportStar(require("./token"), exports);
 __exportStar(require("./validation/utils.validation.js"), exports);
+__exportStar(require("./event/utils.event.js"), exports);

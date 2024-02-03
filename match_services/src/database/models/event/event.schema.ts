@@ -14,31 +14,31 @@ export namespace EventSchema {
       },
       no_goals: {
         type: String,
-        default: null,
+        default: 0
       },
       no_assist: {
         type: String,
-        default: null
+        default: 0
       },
       no_yellow: {
         type: String,
-        default: null
+        default: 0
       },
       no_red: {
         type: String,
-        default: null
+        default: 0
       },
       no_removed: {
         type: String,
-        default: null
+        default: 0
       },
       no_added: {
         type: String,
-        default: null
+        default: 0
       },
       is_initial: {
         type: String,
-        default: null
+        default: 0
       }
     },
     {

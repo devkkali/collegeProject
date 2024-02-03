@@ -4,7 +4,8 @@ import {
   PermissionRoute,
   ClubRoute,
    PlayerRoute,
-   MatchRoute
+   MatchRoute,
+   EventRoute
 } from "../../resources";
 // import { ClubRoute } from "../../resources/club";
 export namespace RoutesPrivateRoute {
@@ -14,6 +15,7 @@ export namespace RoutesPrivateRoute {
     PermissionRoute.Index,
     ClubRoute.Index,
     PlayerRoute.Index,
-    MatchRoute.Index
+    MatchRoute.Index,
+    EventRoute.Index
   ]);
 }

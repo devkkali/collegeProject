@@ -12,6 +12,7 @@ var RoutesPrivateRoute;
         resources_1.PermissionRoute.Index,
         resources_1.ClubRoute.Index,
         resources_1.PlayerRoute.Index,
-        resources_1.MatchRoute.Index
+        resources_1.MatchRoute.Index,
+        resources_1.EventRoute.Index
     ]);
 })(RoutesPrivateRoute || (exports.RoutesPrivateRoute = RoutesPrivateRoute = {}));

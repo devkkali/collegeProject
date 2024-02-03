@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { validateRequest } from "zod-express-middleware";
 import { UtilValidation } from "../../utils/index.js";
-import { MatchController } from "./match.controller.js";
-import { MatchValidation } from "./match.validation.js";
+import { EventController, EventValidation } from "./index.js";
 
-export namespace MatchRoute {
+
+export namespace EventRoute {
   export const Index = Router();
 
 
 
-  Index.get("/match", [MatchController.GetMatch]);
-  Index.get("/match/:id", [MatchController.GetMatch]);
+  // Index.get("/event", [MatchController.GetMatch]);
+  Index.get("/event/:id", [EventController.GetEventsMatch]);
   // Index.get("/club/search", [ClubController.GetClub]);
 
 
@@ -20,11 +20,11 @@ export namespace MatchRoute {
   /**
  * @openapi
  * paths:
- *   /api/matches:
+ *   /resources/event:
  *     post:
  *       tags:
- *         - Match Controller
- *       summary: Insert a new match
+ *         - event Controller
+ *       summary: Insert a new event
  *       requestBody:
  *         required: true
  *         content:
@@ -65,9 +65,14 @@ export namespace MatchRoute {
  *           description: Internal Server Error
  */
 
-  Index.post("/match", [validateRequest(MatchValidation.CreateMatch), MatchController.CreateMatch]);
-  Index.delete("/match/:id", [UtilValidation.Id, MatchController.DeleteMatch]);
-  Index.patch("/match/:id", [MatchController.UpdateMatch]);
+  Index.post("/event", [validateRequest(EventValidation.CreateEvent), EventController.CreateEvent]);
+  Index.delete("/match/:id", [UtilValidation.Id, EventController.DeleteEvent]);
+
+
+
+
+
+  // Index.patch("/match/:id", [MatchController.UpdateMatch]);
 
 
 
