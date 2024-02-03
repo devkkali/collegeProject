@@ -10,6 +10,7 @@ export namespace MatchServices {
             const match_details = req.body;
             const new_match = new matchModel.Match(match_details);
             const save_match = await new_match.save();
+
             return Promise.resolve(
                 {
                     'data': save_match,

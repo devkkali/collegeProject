@@ -29,18 +29,18 @@ export namespace EventController {
 
 
     
-    export const DeleteEvent = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) => {
-        try {
-            res.status(202).json(await EventServices.DeleteMatch(req));
+    // export const DeleteEvent = async (
+    //     req: Request,
+    //     res: Response,
+    //     next: NextFunction
+    // ) => {
+    //     try {
+    //         res.status(202).json(await EventServices.DeleteMatch(req));
 
-        } catch (e) {
-            next(e);
-        }
-    };
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // };
 
 
 

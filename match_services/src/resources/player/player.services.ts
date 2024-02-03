@@ -128,7 +128,7 @@ export namespace PlayerServices {
 
 
                 const result = await playerModel.Player.updateOne({ _id: req.params.id }, { $set: req.body })
-                console.log(result)
+                console.log('RRRRR',result)
                 const returnPlayer = await playerModel.Player.findById(req.params.id);
 
 

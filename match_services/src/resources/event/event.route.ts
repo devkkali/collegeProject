@@ -66,7 +66,7 @@ export namespace EventRoute {
  */
 
   Index.post("/event", [validateRequest(EventValidation.CreateEvent), EventController.CreateEvent]);
-  Index.delete("/match/:id", [UtilValidation.Id, EventController.DeleteEvent]);
+  // Index.delete("/match/:id", [UtilValidation.Id, EventController.DeleteEvent]);
 
 
 
