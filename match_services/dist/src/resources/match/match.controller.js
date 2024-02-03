@@ -20,6 +20,14 @@ var MatchController;
             next(e);
         }
     };
+    MatchController.PlayersByMatch = async (req, res, next) => {
+        try {
+            res.status(200).json(await match_services_1.MatchServices.PlayersByMatch(req));
+        }
+        catch (e) {
+            next(e);
+        }
+    };
     MatchController.DeleteMatch = async (req, res, next) => {
         try {
             res.status(202).json(await match_services_1.MatchServices.DeleteMatch(req));

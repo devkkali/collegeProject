@@ -45,7 +45,7 @@ export namespace MatchServices {
                         error: {
                             message: "Match does not exist",
                             path: "name",
-                          },
+                        },
                     });
                 }
                 return Promise.resolve(
@@ -68,7 +68,7 @@ export namespace MatchServices {
                         error: {
                             message: "Match does not exist",
                             path: "name",
-                          },
+                        },
                     });
                 }
                 return Promise.resolve(
@@ -90,6 +90,46 @@ export namespace MatchServices {
             return Promise.reject(e);
         }
     };
+    export const PlayersByMatch = async (req: Request) => {
+
+        try {
+            if (req.params.id) {
+                var id = req.params.id
+
+                console.log(id)
+                // const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
+                const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
+
+
+                let allPlayers;
+
+                if (check_match) {
+                    // Use check_match safely here
+                    const team1Players = check_match.team1players;
+                    const team2Players = check_match.team2players;
+                    allPlayers = [...(team1Players ?? []), ...(team2Players ?? [])];
+                }
+
+                if (!check_match) {
+                    return Promise.reject({
+                        code: 400,
+                        http_status_code: 404,
+                        error: {
+                            message: "Match does not exist",
+                            path: "name",
+                        },
+                    });
+                }
+                return Promise.resolve(
+                    allPlayers
+                );
+
+
+            }
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    };
 
     export const DeleteMatch = async (req: Request) => {
 
@@ -104,7 +144,7 @@ export namespace MatchServices {
                     error: {
                         message: "Match does not exist",
                         path: "name",
-                      },
+                    },
                 });
             }
 
@@ -143,7 +183,7 @@ export namespace MatchServices {
                         'message': 'Match Edited Successfully',
                         'url': 'system/dashboard/matches'
                     }
-                    
+
                 );
             }
             if (!check_match) {
@@ -153,7 +193,7 @@ export namespace MatchServices {
                     error: {
                         message: "Match does not exist",
                         path: "name",
-                      },
+                    },
                 });
             }
         } catch (e) {

@@ -13,6 +13,54 @@ var MatchRoute;
     MatchRoute.Index.get("/match/:id", [match_controller_js_1.MatchController.GetMatch]);
     // Index.get("/club/search", [ClubController.GetClub]);
     /**
+ * @openapi
+ * paths:
+ *   /api/current_match_players:
+ *     get:
+ *       tags:
+ *         - Match Controller
+ *       summary: Get players list by match
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - team1
+ *                 - team2
+ *                 - team1players
+ *                 - team2players
+ *                 - dateTime
+ *               properties:
+ *                 team1:
+ *                   type: string
+ *                   example: 'ClubA'
+ *                 team2:
+ *                   type: string
+ *                   example: 'ClubB'
+ *                 team1players:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ['player1', 'player2']
+ *                 team2players:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ['player3', 'player4']
+ *                 dateTime:
+ *                   type: string
+ *                   format: date-time
+ *                   example: '2024-01-22T12:00:00Z'
+ *       responses:
+ *         201:
+ *           description: Created
+ *         500:
+ *           description: Internal Server Error
+ */
+    MatchRoute.Index.get("/current_match_players/:id", [match_controller_js_1.MatchController.PlayersByMatch]);
+    /**
    * @openapi
    * paths:
    *   /api/matches:
