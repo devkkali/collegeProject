@@ -92,4 +92,27 @@ export namespace AuthenticationController {
     }
   };
 
+  export const Profile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.Profile(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+  export const ProfileUpdate = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.ProfileUpdate(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
 }

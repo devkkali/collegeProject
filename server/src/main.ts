@@ -50,8 +50,8 @@ class Main extends ExpressConfig {
     // this.app.use("/resources", [UtilsMSApi, RoutesPrivateRoute.Index])
 
     this.app.use("/resources", [
-      TokenVerificationUtils,
-      UtilsPermission,
+      // TokenVerificationUtils,
+      // UtilsPermission,
       UtilsMSApi,
       RoutesPrivateRoute.Index,
     ]);

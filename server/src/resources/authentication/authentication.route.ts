@@ -228,4 +228,18 @@ export namespace AuthenticationRoute {
   Index.get("/authentication/users", [
     AuthenticationController.Users
   ]);
+
+
+
+
+
+
+
+  Index.get("/authentication/profile", [
+    AuthenticationController.Profile,
+  ]);
+  Index.patch("/authentication/profile", [
+    validateRequest(AuthenticationValidation.ProfileUpdate),
+    AuthenticationController.ProfileUpdate,
+  ]);
 }

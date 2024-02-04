@@ -148,7 +148,7 @@ export namespace AuthenticationServices {
           console.log(email)
         })
           .catch((error) => {
-            console.log("ssssssssssssssssssssssssssssssssssss",error)
+            console.log("ssssssssssssssssssssssssssssssssssss", error)
 
           })
 
@@ -182,9 +182,9 @@ export namespace AuthenticationServices {
           console.log('Testing Google', user)
           const defaultRole = 'user';
           const user_details = {
-            first_name:user?.name,
-            email:user?.email,
-            role:defaultRole
+            first_name: user?.name,
+            email: user?.email,
+            role: defaultRole
           }
           const new_user = new userModel.User(user_details);
           const save_user = await new_user.save();
@@ -392,6 +392,77 @@ export namespace AuthenticationServices {
           error: {
             message: "User does not exist",
             path: "uid",
+          },
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+  export const Profile = async (req: Request) => {
+    // console.log('headassssssssssssssssssssssssssssssssss', req.query.id)
+    try {
+      const check_user = await userModel.User.findById(req.query.id).select('-password')
+      console.log("users", check_user)
+      if (check_user)
+        return Promise.resolve({
+          message: 'success',
+          data: check_user
+        });
+
+
+      if (!check_user) {
+        return Promise.reject({
+          code: 400,
+          http_status_code: 404,
+          error: {
+            message: "User does not exist",
+            path: "uid",
+          },
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+  export const ProfileUpdate = async (req: Request) => {
+    console.log('headassssssssssssssssssssssssssssssssss', req.query.id)
+    try {
+      const check_player = await userModel.User.findOne({
+        _id: req.query.id,
+      });
+
+      if (check_player) {
+        const user_details = req.body;
+
+        console.log(user_details)
+
+        // const new_club = new clubModel.Club(club_details);
+        // const save_club = await new_club.save();
+
+
+        const result = await userModel.User.updateOne({ _id: req.query.id }, { $set: req.body })
+        console.log('RRRRR', result)
+        const returnUser = await userModel.User.findById(req.query.id).select('-password');
+
+
+        return Promise.resolve(
+          {
+            'data': returnUser,
+            'message': 'User Edited Successfully',
+            'url': '/dashboard/details'
+          }
+
+        );
+      }
+      if (!check_player) {
+        return Promise.reject({
+          code: 400,
+          http_status_code: 404,
+          error: {
+            message: "Player does not exist",
+            path: "name",
           },
         });
       }
