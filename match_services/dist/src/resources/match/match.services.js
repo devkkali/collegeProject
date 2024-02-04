@@ -216,17 +216,20 @@ var MatchServices;
     };
     MatchServices.PlayersByMatch = async (req) => {
         try {
-            if (req.params.id) {
-                var id = req.params.id;
+            if (req.query.match_id) {
+                var id = req.query.match_id;
+                var desiredPlayerType = req.query.player_type;
                 console.log(id);
                 // const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
                 const check_match = await match_model_1.matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
                 let allPlayers;
+                let filteredPlayers;
                 if (check_match) {
                     // Use check_match safely here
                     const team1Players = check_match.team1players;
                     const team2Players = check_match.team2players;
                     allPlayers = [...(team1Players ?? []), ...(team2Players ?? [])];
+                    filteredPlayers = allPlayers.filter(player => player.player_type === desiredPlayerType);
                 }
                 if (!check_match) {
                     return Promise.reject({
@@ -238,7 +241,7 @@ var MatchServices;
                         },
                     });
                 }
-                return Promise.resolve(allPlayers);
+                return Promise.resolve(filteredPlayers);
             }
         }
         catch (e) {

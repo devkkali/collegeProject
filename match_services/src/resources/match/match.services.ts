@@ -11,51 +11,51 @@ export namespace MatchServices {
         try {
             const history = {
                 "stat": {
-                  "total_score": "20",
-                  "total_match": "5"
+                    "total_score": "20",
+                    "total_match": "5"
                 },
                 "history": [
-                  {
-                    "team1": {
-                      "name": "Team1Name1",
-                      "image": "Team1Image1",
-                      "goal": "Team1Goal1"
+                    {
+                        "team1": {
+                            "name": "Team1Name1",
+                            "image": "Team1Image1",
+                            "goal": "Team1Goal1"
+                        },
+                        "team2": {
+                            "name": "Team2Name1",
+                            "image": "Team2Image1",
+                            "goal": "Team2Goal1"
+                        },
+                        "score": "80"
                     },
-                    "team2": {
-                      "name": "Team2Name1",
-                      "image": "Team2Image1",
-                      "goal": "Team2Goal1"
+                    {
+                        "team1": {
+                            "name": "Team1Name2",
+                            "image": "Team1Image2",
+                            "goal": "Team1Goal2"
+                        },
+                        "team2": {
+                            "name": "Team2Name2",
+                            "image": "Team2Image2",
+                            "goal": "Team2Goal2"
+                        },
+                        "score": "120"
                     },
-                    "score": "80"
-                  },
-                  {
-                    "team1": {
-                      "name": "Team1Name2",
-                      "image": "Team1Image2",
-                      "goal": "Team1Goal2"
-                    },
-                    "team2": {
-                      "name": "Team2Name2",
-                      "image": "Team2Image2",
-                      "goal": "Team2Goal2"
-                    },
-                    "score": "120"
-                  },
-                  {
-                    "team1": {
-                      "name": "Team1Name3",
-                      "image": "Team1Image3",
-                      "goal": "Team1Goal3"
-                    },
-                    "team2": {
-                      "name": "Team2Name3",
-                      "image": "Team2Image3",
-                      "goal": "Team2Goal3"
-                    },
-                    "score": "90"
-                  }
+                    {
+                        "team1": {
+                            "name": "Team1Name3",
+                            "image": "Team1Image3",
+                            "goal": "Team1Goal3"
+                        },
+                        "team2": {
+                            "name": "Team2Name3",
+                            "image": "Team2Image3",
+                            "goal": "Team2Goal3"
+                        },
+                        "score": "90"
+                    }
                 ]
-              }
+            }
 
 
             return Promise.resolve(
@@ -70,23 +70,23 @@ export namespace MatchServices {
         try {
             const scoreboard = [
                 {
-                  "name": "roshan",
-                  "score": "30"
+                    "name": "roshan",
+                    "score": "30"
                 },
                 {
-                  "name": "john",
-                  "score": "45"
+                    "name": "john",
+                    "score": "45"
                 },
                 {
-                  "name": "emma",
-                  "score": "22"
+                    "name": "emma",
+                    "score": "22"
                 },
                 {
-                  "name": "alex",
-                  "score": "50"
+                    "name": "alex",
+                    "score": "50"
                 }
-              ]
-              
+            ]
+
 
 
             return Promise.resolve(
@@ -270,8 +270,9 @@ export namespace MatchServices {
     export const PlayersByMatch = async (req: Request) => {
 
         try {
-            if (req.params.id) {
-                var id = req.params.id
+            if (req.query.match_id) {
+                var id = req.query.match_id
+                var desiredPlayerType = req.query.player_type
 
                 console.log(id)
                 // const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
@@ -279,13 +280,21 @@ export namespace MatchServices {
 
 
                 let allPlayers;
+                let filteredPlayers;
+
 
                 if (check_match) {
                     // Use check_match safely here
                     const team1Players = check_match.team1players;
                     const team2Players = check_match.team2players;
                     allPlayers = [...(team1Players ?? []), ...(team2Players ?? [])];
+                    filteredPlayers = allPlayers.filter(player => (player as any).player_type === desiredPlayerType);
+
                 }
+
+
+
+
 
                 if (!check_match) {
                     return Promise.reject({
@@ -298,7 +307,7 @@ export namespace MatchServices {
                     });
                 }
                 return Promise.resolve(
-                    allPlayers
+                    filteredPlayers
                 );
 
 

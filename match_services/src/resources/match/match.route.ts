@@ -67,7 +67,7 @@ export namespace MatchRoute {
  *           description: Internal Server Error
  */
 
-  Index.get("/current_match_players/:id", [MatchController.PlayersByMatch]);
+  Index.get("/current_match_players", [MatchController.PlayersByMatch]);
 
 
   /**

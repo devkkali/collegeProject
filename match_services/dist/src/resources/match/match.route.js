@@ -63,7 +63,7 @@ var MatchRoute;
  *         500:
  *           description: Internal Server Error
  */
-    MatchRoute.Index.get("/current_match_players/:id", [match_controller_js_1.MatchController.PlayersByMatch]);
+    MatchRoute.Index.get("/current_match_players", [match_controller_js_1.MatchController.PlayersByMatch]);
     /**
    * @openapi
    * paths:
