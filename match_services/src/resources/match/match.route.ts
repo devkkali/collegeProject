@@ -6,6 +6,8 @@ import { MatchValidation } from "./match.validation.js";
 
 export namespace MatchRoute {
   export const Index = Router();
+  Index.get("/user/history", [MatchController.GetUserHistory]);
+  Index.get("/match/scoreboard", [MatchController.GetMatchScoreBoard]);
 
 
   Index.get("/user/ongoing_match", [MatchController.GetOngoingMatchByUser]);

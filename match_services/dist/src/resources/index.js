@@ -18,5 +18,6 @@ __exportStar(require("./club/index.js"), exports);
 __exportStar(require("./player/index.js"), exports);
 __exportStar(require("./match/index.js"), exports);
 __exportStar(require("./event/index.js"), exports);
+__exportStar(require("./fantasy/index.js"), exports);
 __exportStar(require("./permission/index.js"), exports);
 __exportStar(require("./authorization/index.js"), exports);

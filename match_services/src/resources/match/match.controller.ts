@@ -3,6 +3,29 @@ import { MatchServices } from "./match.services";
 
 export namespace MatchController {
 
+    export const GetUserHistory = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(201).json(await MatchServices.GetUserHistory(req));
+        } catch (e) {
+            next(e);
+        }
+    };
+    export const GetMatchScoreBoard = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(201).json(await MatchServices.GetMatchScoreBoard(req));
+        } catch (e) {
+            next(e);
+        }
+    };
+
     export const CreateMatch = async (
         req: Request,
         res: Response,

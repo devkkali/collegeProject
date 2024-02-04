@@ -4,6 +4,22 @@ exports.MatchController = void 0;
 const match_services_1 = require("./match.services");
 var MatchController;
 (function (MatchController) {
+    MatchController.GetUserHistory = async (req, res, next) => {
+        try {
+            res.status(201).json(await match_services_1.MatchServices.GetUserHistory(req));
+        }
+        catch (e) {
+            next(e);
+        }
+    };
+    MatchController.GetMatchScoreBoard = async (req, res, next) => {
+        try {
+            res.status(201).json(await match_services_1.MatchServices.GetMatchScoreBoard(req));
+        }
+        catch (e) {
+            next(e);
+        }
+    };
     MatchController.CreateMatch = async (req, res, next) => {
         try {
             res.status(201).json(await match_services_1.MatchServices.CreateMatch(req));
