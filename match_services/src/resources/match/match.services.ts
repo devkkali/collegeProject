@@ -3,6 +3,7 @@ import { Request } from "express";
 import { clubModel } from "../../database/models/club/club.model";
 import { matchModel } from "../../database/models/match/match.model";
 import { Type } from "../../database/models/match/type";
+import { eventModel } from "../../database/models/event/event.model";
 
 export namespace MatchServices {
 
@@ -11,6 +12,30 @@ export namespace MatchServices {
             const match_details = req.body;
             const new_match = new matchModel.Match(match_details);
             const save_match = await new_match.save();
+
+            // Create events for team1players
+            const team1Events = match_details.team1players.map((playerId: string) => {
+                return {
+                    player_id: playerId,
+                    match_id: save_match._id,
+                    is_initial: "1", // or any other default value
+                };
+            });
+
+            // Create events for team2players
+            const team2Events = match_details.team2players.map((playerId: string) => {
+                return {
+                    player_id: playerId,
+                    match_id: save_match._id,
+                    is_initial: "1", // or any other default value
+                };
+            });
+
+            // Concatenate team1Events and team2Events
+            const allEvents = [...team1Events, ...team2Events];
+
+            // Insert all events into the Event collection
+            await eventModel.Event.insertMany(allEvents);
 
             return Promise.resolve(
                 {

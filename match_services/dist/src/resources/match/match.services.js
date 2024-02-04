@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchServices = void 0;
 const match_model_1 = require("../../database/models/match/match.model");
+const event_model_1 = require("../../database/models/event/event.model");
 var MatchServices;
 (function (MatchServices) {
     MatchServices.CreateMatch = async (req) => {
@@ -9,6 +10,26 @@ var MatchServices;
             const match_details = req.body;
             const new_match = new match_model_1.matchModel.Match(match_details);
             const save_match = await new_match.save();
+            // Create events for team1players
+            const team1Events = match_details.team1players.map((playerId) => {
+                return {
+                    player_id: playerId,
+                    match_id: save_match._id,
+                    is_initial: "1", // or any other default value
+                };
+            });
+            // Create events for team2players
+            const team2Events = match_details.team2players.map((playerId) => {
+                return {
+                    player_id: playerId,
+                    match_id: save_match._id,
+                    is_initial: "1", // or any other default value
+                };
+            });
+            // Concatenate team1Events and team2Events
+            const allEvents = [...team1Events, ...team2Events];
+            // Insert all events into the Event collection
+            await event_model_1.eventModel.Event.insertMany(allEvents);
             return Promise.resolve({
                 'data': save_match,
                 'message': 'Match Created Successfully',

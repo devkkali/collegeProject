@@ -138,17 +138,17 @@ export namespace EventServices {
                     return matchInfo;
                 };
 
-                const check_match = await eventModel.Event.find({ match_id });
-                if (!check_match || check_match.length === 0) {
-                    return Promise.reject({
-                        code: 400,
-                        http_status_code: 404,
-                        error: {
-                            message: "Match does not exist",
-                            path: "name",
-                        },
-                    });
-                }
+                // const check_match = await eventModel.Event.find({ match_id });
+                // if (!check_match || check_match.length === 0) {
+                //     return Promise.reject({
+                //         code: 400,
+                //         http_status_code: 404,
+                //         error: {
+                //             message: "event does not exist",
+                //             path: "name",
+                //         },
+                //     });
+                // }
 
                 const matchInfo = await getMatchInfo(match_id);
                 // console.log(matchInfo)
