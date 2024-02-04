@@ -20,6 +20,22 @@ var MatchController;
             next(e);
         }
     };
+    MatchController.GetOngoingMatchByUser = async (req, res, next) => {
+        try {
+            res.status(200).json(await match_services_1.MatchServices.GetOngoingMatchByUser(req));
+        }
+        catch (e) {
+            next(e);
+        }
+    };
+    MatchController.GetUpcomingMatchByUser = async (req, res, next) => {
+        try {
+            res.status(200).json(await match_services_1.MatchServices.GetUpcomingMatchByUser(req));
+        }
+        catch (e) {
+            next(e);
+        }
+    };
     MatchController.PlayersByMatch = async (req, res, next) => {
         try {
             res.status(200).json(await match_services_1.MatchServices.PlayersByMatch(req));

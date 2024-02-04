@@ -73,6 +73,45 @@ var MatchServices;
             return Promise.reject(e);
         }
     };
+    MatchServices.GetOngoingMatchByUser = async (req) => {
+        // let user_id = 
+        try {
+            let check_match = await match_model_1.matchModel.Match.find({ status: 0 }).populate('team1').populate('team2').exec();
+            const plainMatchObjects = check_match.map(match => JSON.parse(JSON.stringify(match)));
+            const matchesWithScore = plainMatchObjects.map(match => ({
+                ...match,
+                score: '60',
+            }));
+            console.log(matchesWithScore);
+            return Promise.resolve(matchesWithScore);
+        }
+        catch (e) {
+            return Promise.reject(e);
+        }
+    };
+    MatchServices.GetUpcomingMatchByUser = async (req) => {
+        try {
+            const pageNo = parseInt(req.query.page_no, 10) || 1;
+            const pageSize = parseInt(req.query.page_size, 10) || 5;
+            const totalMatches = await match_model_1.matchModel.Match.countDocuments({ status: 1 });
+            let check_match = await match_model_1.matchModel.Match.find({ status: 1 }).populate('team1').populate('team2').limit(pageSize).skip((pageNo - 1) * pageSize).exec();
+            const plainMatchObjects = check_match.map(match => JSON.parse(JSON.stringify(match)));
+            const matchesWithScore = plainMatchObjects.map(match => ({
+                ...match,
+                myteam_status: false,
+            }));
+            console.log(matchesWithScore);
+            const total_pages = Math.ceil(totalMatches / pageSize);
+            return Promise.resolve({
+                matches: matchesWithScore,
+                page_size: pageSize,
+                total_pages: total_pages,
+            });
+        }
+        catch (e) {
+            return Promise.reject(e);
+        }
+    };
     MatchServices.PlayersByMatch = async (req) => {
         try {
             if (req.params.id) {

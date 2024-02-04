@@ -8,7 +8,10 @@ export namespace MatchRoute {
   export const Index = Router();
 
 
+  Index.get("/user/ongoing_match", [MatchController.GetOngoingMatchByUser]);
 
+  Index.get("/user/upcoming_match", [MatchController.GetUpcomingMatchByUser]);
+  
   Index.get("/match", [MatchController.GetMatch]);
   Index.get("/match/:id", [MatchController.GetMatch]);
   // Index.get("/club/search", [ClubController.GetClub]);

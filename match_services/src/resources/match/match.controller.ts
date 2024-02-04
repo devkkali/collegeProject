@@ -26,6 +26,28 @@ export namespace MatchController {
             next(e);
         }
     };
+    export const GetOngoingMatchByUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(200).json(await MatchServices.GetOngoingMatchByUser(req));
+        } catch (e) {
+            next(e);
+        }
+    };
+    export const GetUpcomingMatchByUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(200).json(await MatchServices.GetUpcomingMatchByUser(req));
+        } catch (e) {
+            next(e);
+        }
+    };
     export const PlayersByMatch = async (
         req: Request,
         res: Response,

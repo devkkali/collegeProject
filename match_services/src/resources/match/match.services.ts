@@ -2,6 +2,7 @@ import { Request } from "express";
 // import jwt from "jsonwebtoken";
 import { clubModel } from "../../database/models/club/club.model";
 import { matchModel } from "../../database/models/match/match.model";
+import { Type } from "../../database/models/match/type";
 
 export namespace MatchServices {
 
@@ -91,6 +92,66 @@ export namespace MatchServices {
             return Promise.reject(e);
         }
     };
+
+
+
+
+    export const GetOngoingMatchByUser = async (req: Request) => {
+
+        // let user_id = 
+
+
+        try {
+            let check_match: Type.ScoreExtendedMatch[] = await matchModel.Match.find({ status: 0 }).populate('team1').populate('team2').exec();
+            const plainMatchObjects = check_match.map(match => JSON.parse(JSON.stringify(match)));
+
+            const matchesWithScore: Type.ScoreExtendedMatch[] = plainMatchObjects.map(match => ({
+                ...match,
+                score: '60',
+            }));
+
+            console.log(matchesWithScore);
+
+            return Promise.resolve(
+                matchesWithScore
+            );
+
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    };
+    export const GetUpcomingMatchByUser = async (req: Request) => {
+        try {
+            const pageNo = parseInt(req.query.page_no as string, 10) || 1;
+            const pageSize = parseInt(req.query.page_size as string, 10) || 5;
+            const totalMatches = await matchModel.Match.countDocuments({ status: 1 });
+
+
+            let check_match: Type.ScoreExtendedMatch[] = await matchModel.Match.find({ status: 1 }).populate('team1').populate('team2').limit(pageSize).skip((pageNo - 1) * pageSize).exec();
+            const plainMatchObjects = check_match.map(match => JSON.parse(JSON.stringify(match)));
+
+            const matchesWithScore: Type.ScoreExtendedMatch[] = plainMatchObjects.map(match => ({
+                ...match,
+                myteam_status: false,
+            }));
+
+            console.log(matchesWithScore);
+            const total_pages = Math.ceil(totalMatches / pageSize);
+
+            return Promise.resolve(
+                {
+                    matches: matchesWithScore,
+                    page_size: pageSize,
+                    total_pages: total_pages,
+                }
+            );
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    };
+
+
+
     export const PlayersByMatch = async (req: Request) => {
 
         try {
