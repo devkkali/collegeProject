@@ -119,7 +119,7 @@ var MatchServices;
             const plainMatchObjects = check_match.map(match => JSON.parse(JSON.stringify(match)));
             const matchesWithScore = plainMatchObjects.map(match => ({
                 ...match,
-                myteam_status: false,
+                myteam_status: Math.round(Math.random()) === 1,
             }));
             console.log(matchesWithScore);
             const total_pages = Math.ceil(totalMatches / pageSize);

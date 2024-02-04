@@ -157,7 +157,7 @@ export namespace MatchServices {
 
             const matchesWithScore: Type.ScoreExtendedMatch[] = plainMatchObjects.map(match => ({
                 ...match,
-                myteam_status: false,
+                myteam_status: Math.round(Math.random()) === 1,
             }));
 
             console.log(matchesWithScore);
