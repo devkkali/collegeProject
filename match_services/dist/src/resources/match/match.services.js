@@ -17,12 +17,12 @@ var MatchServices;
                         "team1": {
                             "name": "Team1Name1",
                             "image": "Team1Image1",
-                            "goal": "Team1Goal1"
+                            "goal": "1"
                         },
                         "team2": {
                             "name": "Team2Name1",
                             "image": "Team2Image1",
-                            "goal": "Team2Goal1"
+                            "goal": "2"
                         },
                         "score": "80"
                     },
@@ -30,12 +30,12 @@ var MatchServices;
                         "team1": {
                             "name": "Team1Name2",
                             "image": "Team1Image2",
-                            "goal": "Team1Goal2"
+                            "goal": "3"
                         },
                         "team2": {
                             "name": "Team2Name2",
                             "image": "Team2Image2",
-                            "goal": "Team2Goal2"
+                            "goal": "4"
                         },
                         "score": "120"
                     },
@@ -43,12 +43,12 @@ var MatchServices;
                         "team1": {
                             "name": "Team1Name3",
                             "image": "Team1Image3",
-                            "goal": "Team1Goal3"
+                            "goal": "5"
                         },
                         "team2": {
                             "name": "Team2Name3",
                             "image": "Team2Image3",
-                            "goal": "Team2Goal3"
+                            "goal": "6"
                         },
                         "score": "90"
                     }
