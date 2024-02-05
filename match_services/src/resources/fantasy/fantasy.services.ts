@@ -104,7 +104,8 @@ export namespace FantasyServices {
 
             // Find existing Fantasy team
             const existingFantasy = await fantasyModel.Fantasy.findOne({
-                user_id: fantasyDetails.user_id,
+                // user_id: fantasyDetails.user_id,
+                user_id: '65bd183fde60d45e19405aff',
                 match_id: fantasyDetails.match_id,
             });
 

@@ -6,7 +6,7 @@ export namespace FantasyValidation {
     body: z
       .object({
         team_name: z.string().optional(),
-        user_id: z.string(),
+        user_id: z.string().optional(),
         match_id: z.string(),
         players: z.array(z.string().nullable()),
       })
