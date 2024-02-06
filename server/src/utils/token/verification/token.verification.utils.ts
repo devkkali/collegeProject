@@ -21,7 +21,7 @@ export const TokenVerificationUtils = async (
     }
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     const { token } = await TokenSplitUtils(req.headers.authorization);
-    const token2 = req.cookies?.["accessToken"];
+    const token2 = req.cookies?.["token"];
 
     jwt.verify(
       token || token2,
