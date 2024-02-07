@@ -1,7 +1,9 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 export const isTokenExpired = (token: string): boolean => {
   try {
-    const decoded = jwt.decode(token) as JwtPayload | null;
+    // Extract the token part from the "Bearer <token>" string
+    const tokenPart = token.split(' ')[1];
+    const decoded = jwt.decode(tokenPart) as JwtPayload | null;
     if (!decoded || !decoded.exp) {
       return true; // Token or expiration claim not found, consider it expired
     }
@@ -11,4 +13,4 @@ export const isTokenExpired = (token: string): boolean => {
   } catch (error) {
     return true; // Error decoding token, consider it expired
   }
-}
+};

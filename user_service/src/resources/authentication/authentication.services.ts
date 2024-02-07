@@ -471,21 +471,41 @@ export namespace AuthenticationServices {
 
     const isExpired = isTokenExpired(req.headers.authorization as string)
 
-    // console.log('asdf',decoded)
-    console.log('asdf', isExpired)
+    // console.log('asdfsdf',req.headers.authorization)
+    // console.log('asdfff', isExpired)
+
+
+
+    // const decoded = jwt.decode((req.headers.authorization as string).split(' ')[1]) as JwtPayload | null;
+    // console.log('Roshan Devkota', decoded)
 
 
     try {
       if (!isExpired) {
-        const decoded = jwt.decode(req.headers.authorization as string) as JwtPayload | null;
+        let token = (req.headers.authorization as string).split(' ')[1]
+
+
+        let aaa = jwt.verify(
+          token,
+          process.env.JWT as string) as JwtPayload;
 
 
 
 
 
 
-        // const check_user = await userModel.User.findById().select('-password')
-        const check_user = null;
+
+
+        // const decoded = jwt.decode((req.headers.authorization as string).split(' ')[1], process.env.JWT);
+        // const decoded = jwt.decode(req.headers.authorization as string) as JwtPayload | null;
+
+
+        // const decoded = jwt.decode(tokenPart) as JwtPayload | null;
+
+
+
+        const check_user = await userModel.User.findById(aaa.id).select('-password')
+        // const check_user = null;
         console.log("users", check_user)
         if (check_user)
           return Promise.resolve({
@@ -510,44 +530,61 @@ export namespace AuthenticationServices {
     }
   };
   export const ProfileUpdate = async (req: Request) => {
+    const isExpired = isTokenExpired(req.headers.authorization as string)
+
+
     console.log('headassssssssssssssssssssssssssssssssss', req.query.id)
     try {
-      const check_player = await userModel.User.findOne({
-        _id: req.query.id,
-      });
-
-      if (check_player) {
-        const user_details = req.body;
-
-        console.log(user_details)
-
-        // const new_club = new clubModel.Club(club_details);
-        // const save_club = await new_club.save();
 
 
-        const result = await userModel.User.updateOne({ _id: req.query.id }, { $set: req.body })
-        console.log('RRRRR', result)
-        const returnUser = await userModel.User.findById(req.query.id).select('-password');
+      if (!isExpired) {
+        let token = (req.headers.authorization as string).split(' ')[1]
 
 
-        return Promise.resolve(
-          {
-            'data': returnUser,
-            'message': 'User Edited Successfully',
-            'url': '/dashboard/details'
-          }
+        let aaa = jwt.verify(
+          token,
+          process.env.JWT as string) as JwtPayload;
 
-        );
-      }
-      if (!check_player) {
-        return Promise.reject({
-          code: 400,
-          http_status_code: 404,
-          error: {
-            message: "Player does not exist",
-            path: "name",
-          },
+
+
+
+        const check_player = await userModel.User.findOne({
+          _id: aaa.id,
         });
+
+        if (check_player) {
+          const user_details = req.body;
+
+          console.log(user_details)
+
+          // const new_club = new clubModel.Club(club_details);
+          // const save_club = await new_club.save();
+
+
+          const result = await userModel.User.updateOne({ _id: aaa.id }, { $set: req.body })
+          console.log('RRRRR', result)
+          const returnUser = await userModel.User.findById(aaa.id).select('-password');
+
+
+          return Promise.resolve(
+            {
+              'data': returnUser,
+              'message': 'User Edited Successfully',
+              'url': '/dashboard/details'
+            }
+
+          );
+        }
+        if (!check_player) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: 404,
+            error: {
+              message: "Player does not exist",
+              path: "name",
+            },
+          });
+        }
       }
     } catch (e) {
       return Promise.reject(e);
