@@ -11,7 +11,6 @@ var PlayerValidation;
             age: zod_1.z.string(),
             player_type: zod_1.z.enum(["goalkipper", "defender", "midfielder", "forward"]),
             club_id: zod_1.z.string(),
-            status: zod_1.z.enum(["-1", "0", "1"])
         })
             .strict()
     };
