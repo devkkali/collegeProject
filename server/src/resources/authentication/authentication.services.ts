@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { userModel } from "../../database/models/user/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -470,5 +470,37 @@ export namespace AuthenticationServices {
       return Promise.reject(e);
     }
   };
+  export const UpdatePassword = async (req: Request, res: Response) => {
+    try {
+      console.log("hello");
+      const userDetails = res.locals.decode;
+      console.log(userDetails);
+      const check_user = await userModel.User.findById(userDetails.id);
+      console.log(check_user);
+      if (check_user) {
+        const match = await bcrypt.compare(
+          req.body.current_password,
+          check_user.password as string
+        );
+        if (!match) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: 409,
+            error: "Password not match ",
+          });
+        }
 
+        const hashedPassword = await bcrypt.hash(req.body.new_password, 8);
+
+        await check_user.updateOne({
+          password: hashedPassword,
+        });
+        return Promise.resolve({
+          message: "Password Updated",
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 }

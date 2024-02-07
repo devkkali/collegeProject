@@ -115,4 +115,21 @@ export namespace AuthenticationController {
     }
   };
 
+
+
+
+  export const UpdatePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res
+        .status(200)
+        .json(await AuthenticationServices.UpdatePassword(req, res));
+    } catch (e) {
+      next(e);
+    }
+  };
+
 }

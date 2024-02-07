@@ -31,7 +31,7 @@ class Main extends ExpressConfig {
     this.app.use(express.urlencoded({ extended: true }));
 
     this.app.use("/resources", [
-      UtilsMSApi,
+      // UtilsMSApi,
       RoutesPrivateRoute.Index,
     ]);
     this.app.use(UtilsError);

@@ -207,7 +207,14 @@ export namespace AuthenticationRoute {
     AuthenticationController.SetPassword,
   ]);
 
+  Index.post("/authentication/updatepassword", [
+    validateRequest(AuthenticationValidation.UpdatePassword),
+    AuthenticationController.UpdatePassword,
+  ]);
 
+
+
+  
   /**
  * @openapi
  * '/resources/authentication/users':

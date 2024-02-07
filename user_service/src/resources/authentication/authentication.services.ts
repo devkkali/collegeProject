@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { userModel } from "../../database/models/user/user.model";
 // import jwt from "jsonwebtoken";
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -13,6 +13,7 @@ import { error } from "console";
 import { getAuth, EmailSignInProviderConfig } from "firebase-admin/auth";
 import admin from "../../utils/firebase/config";
 import { token } from "morgan";
+import { isTokenExpired } from "../../utils/token/validation/token.validation.utils";
 
 
 
@@ -76,8 +77,8 @@ export namespace AuthenticationServices {
 
 
     console.log('***************************************user ms sign in', req.body)
-    
-    
+
+
     try {
       const check_user = await userModel.User.findOne({
         $or: [{ email: req.body?.uid }, { username: req.body?.uid }],
@@ -145,7 +146,7 @@ export namespace AuthenticationServices {
         console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
         let user;
         try {
-           user = await admin.auth().verifyIdToken(req.body.gtoken);
+          user = await admin.auth().verifyIdToken(req.body.gtoken);
           // If verification is successful, 'user' will contain the decoded token
           console.log(user);
         } catch (error) {
@@ -159,7 +160,7 @@ export namespace AuthenticationServices {
             },
           });          // Handle the error as needed
         }
-                // user = {
+        // user = {
         //   email: decodedToken.email,
         //   // Add other properties as needed
         // };
@@ -294,35 +295,35 @@ export namespace AuthenticationServices {
 
 
 
-  function isTokenExpired(token: string): boolean {
-    try {
-      const decoded = jwt.decode(token) as JwtPayload | null;
-      if (!decoded || !decoded.exp) {
-        return true; // Token or expiration claim not found, consider it expired
-      }
-      const expirationTime = decoded.exp * 1000; // Convert seconds to milliseconds
-      const currentTime = Date.now();
-      return expirationTime < currentTime; // True if token is expired, false otherwise
-    } catch (error) {
-      return true; // Error decoding token, consider it expired
-    }
-  }
+  // function isTokenExpired(token: string): boolean {
+  //   try {
+  //     const decoded = jwt.decode(token) as JwtPayload | null;
+  //     if (!decoded || !decoded.exp) {
+  //       return true; // Token or expiration claim not found, consider it expired
+  //     }
+  //     const expirationTime = decoded.exp * 1000; // Convert seconds to milliseconds
+  //     const currentTime = Date.now();
+  //     return expirationTime < currentTime; // True if token is expired, false otherwise
+  //   } catch (error) {
+  //     return true; // Error decoding token, consider it expired
+  //   }
+  // }
 
   export const ForgotPassword = async (req: Request) => {
     console.log('RRRROOOORORORORO', req.body)
-  
+
     try {
       const check_email = await userModel.User.findOne({
         email: req.body?.email,
       });
-  
+
       if (check_email) {
         const check_forgot_password_session = await SessionModel.ForgotPassword.findOne({
           session_email: check_email.email,
         });
-  
+
         console.log(isTokenExpired(check_forgot_password_session?.session_verification_key))
-  
+
         const forgot_password_token = jwt.sign(
           {
             user_id: check_email._id,
@@ -334,26 +335,26 @@ export namespace AuthenticationServices {
             expiresIn: "1d",
           }
         );
-  
+
         if (!check_forgot_password_session || isTokenExpired(check_forgot_password_session?.session_verification_key)) {
           if (check_forgot_password_session && isTokenExpired(check_forgot_password_session?.session_verification_key)) {
             // Delete the previous session if the token is expired
             await SessionModel.ForgotPassword.deleteOne({ session_email: check_email.email });
           }
-  
+
           const new_session_forgot_password = new SessionModel.ForgotPassword({
             session_email: check_email.email,
             session_verification_key: forgot_password_token,
           });
-  
+
           const save_session_forgot_password = await new_session_forgot_password.save();
-  
+
           console.log('email sent with new token is does not exist')
           await ForgotPasswordEmailHelper({
             user_email: save_session_forgot_password.session_email as string,
             verification_token: save_session_forgot_password.session_verification_key as string,
           });
-  
+
         } else {
           console.log('email sent with new token if already exists')
           await ForgotPasswordEmailHelper({
@@ -361,13 +362,13 @@ export namespace AuthenticationServices {
             verification_token: check_forgot_password_session?.session_verification_key as string,
           });
         }
-  
-  
+
+
         return Promise.resolve({
           message: "Forgot Password Email Sent On your Email Address",
         });
       }
-  
+
       return Promise.reject({
         code: 400,
         http_status_code: 409,
@@ -380,7 +381,7 @@ export namespace AuthenticationServices {
       return Promise.reject(e);
     }
   };
-  
+
 
 
   export const SetPassword = async (req: Request) => {
@@ -402,7 +403,7 @@ export namespace AuthenticationServices {
           } else {
             const { email } = decoded;
             const sessionData = await SessionModel.ForgotPassword.findOne({ session_email: email });
-  
+
             if (!sessionData) {
               return Promise.reject({
                 code: 400,
@@ -413,15 +414,15 @@ export namespace AuthenticationServices {
                 },
               });
             }
-  
+
             await userModel.User.updateOne(
               { email: email },
               { $set: { password: req.body.new_password } }
             );
-  
+
             // Delete the session record after successfully updating the password
             await SessionModel.ForgotPassword.deleteOne({ session_email: email });
-  
+
             return Promise.resolve({
               message: "Password updated successfully",
             });
@@ -432,7 +433,7 @@ export namespace AuthenticationServices {
       return Promise.reject(e);
     }
   };
-  
+
 
 
 
@@ -467,25 +468,42 @@ export namespace AuthenticationServices {
 
   export const Profile = async (req: Request) => {
     // console.log('headassssssssssssssssssssssssssssssssss', req.query.id)
+
+    const isExpired = isTokenExpired(req.headers.authorization as string)
+
+    // console.log('asdf',decoded)
+    console.log('asdf', isExpired)
+
+
     try {
-      const check_user = await userModel.User.findById(req.query.id).select('-password')
-      console.log("users", check_user)
-      if (check_user)
-        return Promise.resolve({
-          message: 'success',
-          data: check_user
-        });
+      if (!isExpired) {
+        const decoded = jwt.decode(req.headers.authorization as string) as JwtPayload | null;
 
 
-      if (!check_user) {
-        return Promise.reject({
-          code: 400,
-          http_status_code: 404,
-          error: {
-            message: "User does not exist",
-            path: "uid",
-          },
-        });
+
+
+
+
+        // const check_user = await userModel.User.findById().select('-password')
+        const check_user = null;
+        console.log("users", check_user)
+        if (check_user)
+          return Promise.resolve({
+            message: 'success',
+            data: check_user
+          });
+
+
+        if (!check_user) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: 404,
+            error: {
+              message: "User does not exist",
+              path: "uid",
+            },
+          });
+        }
       }
     } catch (e) {
       return Promise.reject(e);
@@ -529,6 +547,45 @@ export namespace AuthenticationServices {
             message: "Player does not exist",
             path: "name",
           },
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+
+
+
+
+
+  export const UpdatePassword = async (req: Request, res: Response) => {
+    try {
+      console.log("hello");
+      const userDetails = res.locals.decode;
+      console.log(userDetails);
+      const check_user = await userModel.User.findById(userDetails.id);
+      console.log(check_user);
+      if (check_user) {
+        const match = await bcrypt.compare(
+          req.body.current_password,
+          check_user.password as string
+        );
+        if (!match) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: 409,
+            error: "Password not match ",
+          });
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.new_password, 8);
+
+        await check_user.updateOne({
+          password: hashedPassword,
+        });
+        return Promise.resolve({
+          message: "Password Updated",
         });
       }
     } catch (e) {

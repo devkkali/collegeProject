@@ -48,7 +48,19 @@ export namespace AuthenticationValidation {
   };
 
 
-
+  export const UpdatePassword = {
+    body: z
+      .object({
+        current_password: z.string(),
+        new_password: z.string(),
+        cnf_password: z.string(),
+      })
+      .strict()
+      .refine((data) => data.new_password === data.cnf_password, {
+        message: "Passwords don't match",
+        path: ["cnf_password"],
+      }),
+  };
 
   export const SetPassword = {
     body: z
